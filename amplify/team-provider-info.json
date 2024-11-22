@@ -1,0 +1,49 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-merkleshop-dev-cccda-authRole",
+      "UnauthRoleArn": "arn:aws:iam::253790414783:role/amplify-merkleshop-dev-cccda-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::253790414783:role/amplify-merkleshop-dev-cccda-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-merkleshop-dev-cccda-deployment",
+      "UnauthRoleName": "amplify-merkleshop-dev-cccda-unauthRole",
+      "StackName": "amplify-merkleshop-dev-cccda",
+      "StackId": "arn:aws:cloudformation:eu-north-1:253790414783:stack/amplify-merkleshop-dev-cccda/a9165b20-a81c-11ef-be6c-0aa7c6f3bab1",
+      "AmplifyAppId": "d1u9ycwj045y5l"
+    },
+    "categories": {
+      "function": {
+        "checkEmailFunction": {
+          "bloomreachProjectId": "6dce00a6-25ba-11eb-9cc7-7e4f7e40a7d0",
+          "bloomreachApiKey": "Y3JuNzAwZ2Y2c2RoMmVjOXVlbWJsOWg2eWdxZmg2OWIxbmtzN2d6dWJ1MDdjZWo1dmZ4aXVmMTVwb2NoOTdsdzpmb2NuemxnbTdjc2IyMWNxY3hqNDhpMnpnOHpwZDIzdDlkYzNlYmU2aTNvem93ZzFqaWsxOGZkNDY0a2RiYWFz"
+        }
+      }
+    }
+  },
+  "stage": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-merkleshop-stage-8b790-authRole",
+      "UnauthRoleArn": "arn:aws:iam::253790414783:role/amplify-merkleshop-stage-8b790-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::253790414783:role/amplify-merkleshop-stage-8b790-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-merkleshop-stage-8b790-deployment",
+      "UnauthRoleName": "amplify-merkleshop-stage-8b790-unauthRole",
+      "StackName": "amplify-merkleshop-stage-8b790",
+      "StackId": "arn:aws:cloudformation:eu-west-2:253790414783:stack/amplify-merkleshop-stage-8b790/1327bfd0-a8af-11ef-99c6-0a97b40d391d",
+      "AmplifyAppId": "d32hpmg6oqgpog"
+    },
+    "categories": {
+      "function": {
+        "checkEmailFunction": {
+          "bloomreachProjectId": "6dce00a6-25ba-11eb-9cc7-7e4f7e40a7d0",
+          "bloomreachApiKey": "Y3JuNzAwZ2Y2c2RoMmVjOXVlbWJsOWg2eWdxZmg2OWIxbmtzN2d6dWJ1MDdjZWo1dmZ4aXVmMTVwb2NoOTdsdzpmb2NuemxnbTdjc2IyMWNxY3hqNDhpMnpnOHpwZDIzdDlkYzNlYmU2aTNvem93ZzFqaWsxOGZkNDY0a2RiYWFz",
+          "deploymentBucketName": "amplify-merkleshop-stage-8b790-deployment",
+          "s3Key": "amplify-builds/checkEmailFunction-5456534861397137526d-build.zip"
+        }
+      },
+      "api": {
+        "bloomreachAPI": {}
+      }
+    }
+  }
+}

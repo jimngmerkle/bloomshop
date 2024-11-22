@@ -1,0 +1,60 @@
+{
+  "api": {
+    "bloomreachAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "checkEmailFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "checkEmailFunction": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_checkEmailFunction_bloomreachApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "checkEmailFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_checkEmailFunction_bloomreachProjectId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "checkEmailFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_checkEmailFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "checkEmailFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_checkEmailFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "checkEmailFunction"
+        }
+      ]
+    }
+  }
+}
