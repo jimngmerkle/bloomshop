@@ -7,7 +7,7 @@ import "./loginform.css";
 const Loginform = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const apiUrl = 'https://main.d32hpmg6oqgpog.amplifyapp.com';
+  const apiUrl = 'https://q0sifx2w77.execute-api.eu-west-2.amazonaws.com/stage';
   const navigate = useNavigate(); 
   const { setIsLoggedIn } = useAuth(); // Access the AuthContext to update login state
 
