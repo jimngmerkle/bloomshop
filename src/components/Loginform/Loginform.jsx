@@ -7,7 +7,7 @@ import "./loginform.css";
 const Loginform = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const apiUrl = import.meta.env.VITE_APP_API_URL || 'http://localhost:5173';
+  const apiUrl = 'https://main.d32hpmg6oqgpog.amplifyapp.com';
   const navigate = useNavigate(); 
   const { setIsLoggedIn } = useAuth(); // Access the AuthContext to update login state
 
