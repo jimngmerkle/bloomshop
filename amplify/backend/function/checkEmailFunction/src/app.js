@@ -68,7 +68,7 @@ app.post('/check-email', function(req, res) {
       if (apiRes.statusCode === 200) {
         res.status(200).json({ success: true, data: apiData });
       } else {
-        res.status(apiRes.statusCode).json({ success: false, error: apiData });
+        res.status(apiRes.statusCode).json({ success: false, error: apiData }); 
       }
     });
   });
