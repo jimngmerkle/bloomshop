@@ -11,4 +11,7 @@ export default defineConfig({
     sourcemap: true,
     minify: false,
   },
+  server: {
+    sourcemap: true, // Enable source maps for development server
+  },
 }); 
