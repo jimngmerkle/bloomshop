@@ -16,7 +16,8 @@
         "checkEmailFunction": {
           "bloomreachProjectId": "6dce00a6-25ba-11eb-9cc7-7e4f7e40a7d0",
           "bloomreachApiKey": "Y3JuNzAwZ2Y2c2RoMmVjOXVlbWJsOWg2eWdxZmg2OWIxbmtzN2d6dWJ1MDdjZWo1dmZ4aXVmMTVwb2NoOTdsdzpmb2NuemxnbTdjc2IyMWNxY3hqNDhpMnpnOHpwZDIzdDlkYzNlYmU2aTNvem93ZzFqaWsxOGZkNDY0a2RiYWFz"
-        }
+        },
+        "updateConsentFunction": {}
       }
     }
   },
@@ -49,6 +50,45 @@
       },
       "api": {
         "bloomreachAPI": {}
+      }
+    }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-merkleshop-test-fddea-authRole",
+      "UnauthRoleArn": "arn:aws:iam::253790414783:role/amplify-merkleshop-test-fddea-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::253790414783:role/amplify-merkleshop-test-fddea-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-merkleshop-test-fddea-deployment",
+      "UnauthRoleName": "amplify-merkleshop-test-fddea-unauthRole",
+      "StackName": "amplify-merkleshop-test-fddea",
+      "StackId": "arn:aws:cloudformation:eu-west-2:253790414783:stack/amplify-merkleshop-test-fddea/f77b5870-ac03-11ef-914e-0afbf0a3a7f1",
+      "AmplifyAppId": "d32hpmg6oqgpog"
+    },
+    "categories": {
+      "function": {
+        "checkEmailFunction": {
+          "bloomreachProjectId": "6dce00a6-25ba-11eb-9cc7-7e4f7e40a7d0",
+          "bloomreachApiKey": "Y3JuNzAwZ2Y2c2RoMmVjOXVlbWJsOWg2eWdxZmg2OWIxbmtzN2d6dWJ1MDdjZWo1dmZ4aXVmMTVwb2NoOTdsdzpmb2NuemxnbTdjc2IyMWNxY3hqNDhpMnpnOHpwZDIzdDlkYzNlYmU2aTNvem93ZzFqaWsxOGZkNDY0a2RiYWFz",
+          "deploymentBucketName": "amplify-merkleshop-test-fddea-deployment",
+          "s3Key": "amplify-builds/checkEmailFunction-57526b70457877783545-build.zip"
+        },
+        "updateConsentFunction": {
+          "bloomreachProjectId": "6dce00a6-25ba-11eb-9cc7-7e4f7e40a7d0",
+          "bloomreachApiKey": "Y3JuNzAwZ2Y2c2RoMmVjOXVlbWJsOWg2eWdxZmg2OWIxbmtzN2d6dWJ1MDdjZWo1dmZ4aXVmMTVwb2NoOTdsdzpmb2NuemxnbTdjc2IyMWNxY3hqNDhpMnpnOHpwZDIzdDlkYzNlYmU2aTNvem93ZzFqaWsxOGZkNDY0a2RiYWFz",
+          "deploymentBucketName": "amplify-merkleshop-test-fddea-deployment",
+          "s3Key": "amplify-builds/updateConsentFunction-6a6452576d6a33344d61-build.zip"
+        },
+        "updateConsentsFunction": {
+          "bloomreachProjectId": "6dce00a6-25ba-11eb-9cc7-7e4f7e40a7d0",
+          "bloomreachApiKey": "Y3JuNzAwZ2Y2c2RoMmVjOXVlbWJsOWg2eWdxZmg2OWIxbmtzN2d6dWJ1MDdjZWo1dmZ4aXVmMTVwb2NoOTdsdzpmb2NuemxnbTdjc2IyMWNxY3hqNDhpMnpnOHpwZDIzdDlkYzNlYmU2aTNvem93ZzFqaWsxOGZkNDY0a2RiYWFz",
+          "deploymentBucketName": "amplify-merkleshop-test-fddea-deployment",
+          "s3Key": "amplify-builds/updateConsentsFunction-385943686844374d634e-build.zip"
+        }
+      },
+      "api": {
+        "bloomreachAPI": {},
+        "brapi": {}
       }
     }
   }

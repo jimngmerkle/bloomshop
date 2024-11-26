@@ -7,7 +7,7 @@ import "./loginform.css";
 const Loginform = () => {
   const [email, setLocalEmail] = useState('');
   const [password, setPassword] = useState('');
-  const apiUrl = 'https://qijqngdxdc.execute-api.eu-west-2.amazonaws.com/stage';
+  const apiUrl = 'https://3n6bfpscgf.execute-api.eu-west-2.amazonaws.com/test';
   const navigate = useNavigate(); 
   const { setIsLoggedIn, setEmail } = useAuth(); // Access the AuthContext to update login state and email
 

@@ -7,7 +7,7 @@ const Subscriptionform = () => {
   const { email } = useAuth(); // Access email from AuthContext
   const [categories, setCategories] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const apiUrl = 'https://qijqngdxdc.execute-api.eu-west-2.amazonaws.com/stage';
+  const apiUrl = 'https://3n6bfpscgf.execute-api.eu-west-2.amazonaws.com/test';
 
   useEffect(() => {
     const fetchConsents = async () => {

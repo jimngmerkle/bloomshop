@@ -21,6 +21,28 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
+    },
+    "brapi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "updateConsentsFunction"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "checkEmailFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
   "function": {
@@ -41,6 +63,12 @@
           "resourceName": "checkEmailFunction"
         }
       ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "updateConsentsFunction": {
+      "build": true,
+      "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
@@ -107,6 +135,38 @@
         {
           "category": "function",
           "resourceName": "updateConsentFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateConsentsFunction_bloomreachApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateConsentsFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateConsentsFunction_bloomreachProjectId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateConsentsFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateConsentsFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateConsentsFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateConsentsFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateConsentsFunction"
         }
       ]
     }

@@ -8,7 +8,7 @@ const Registrationform = () => {
   const [first_name, set_first_name] = useState("");
   const [last_name, set_last_name] = useState("");
   const [password, set_password] = useState("");
-  const apiUrl = 'https://qijqngdxdc.execute-api.eu-west-2.amazonaws.com/stage'; 
+  const apiUrl = 'https://3n6bfpscgf.execute-api.eu-west-2.amazonaws.com/test'; 
   const navigate = useNavigate(); 
   const { setIsLoggedIn, setEmail } = useAuth(); // Access the AuthContext to update login state and email
 

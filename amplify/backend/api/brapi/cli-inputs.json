@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/updateconsents": {
+      "name": "/updateconsents",
+      "lambdaFunction": "updateConsentsFunction",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/checkemail": {
+      "name": "/checkemail",
+      "lambdaFunction": "checkEmailFunction",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
