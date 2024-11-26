@@ -5,11 +5,11 @@ import { useAuth } from "../../utils/AuthContext";
 import "./loginform.css";
 
 const Loginform = () => {
-  const [email, setEmail] = useState('');
+  const [email, setLocalEmail] = useState('');
   const [password, setPassword] = useState('');
   const apiUrl = 'https://qijqngdxdc.execute-api.eu-west-2.amazonaws.com/stage';
   const navigate = useNavigate(); 
-  const { setIsLoggedIn } = useAuth(); // Access the AuthContext to update login state
+  const { setIsLoggedIn, setEmail } = useAuth(); // Access the AuthContext to update login state and email
 
   const checkEmail = async (email) => {
     try {
@@ -38,6 +38,7 @@ const Loginform = () => {
         toast.success(`Email ${email} successfully logged in`);
         console.log(`Email ${email} logged in`);
         setIsLoggedIn(true); // Update global login state
+        setEmail(email);
         exponea.identify(email); 
         setTimeout(() => {
           navigate("/"); 
@@ -80,7 +81,7 @@ const Loginform = () => {
                 type="email"
                 name="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setLocalEmail(e.target.value)}
                 required
               />
             </label>

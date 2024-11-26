@@ -34,6 +34,17 @@ const Navbar = () => {
                 All Products
               </Link>
             </li>
+            {isLoggedIn && ( // Show "Subscription Preferences" only if logged in
+              <li>
+                <Link
+                  aria-label="Subscription Preferences"
+                  className="link-hover"
+                  to="/subscriptionpage"
+                >
+                  Subscription Preferences
+                </Link>
+              </li>
+            )}            
             {!isLoggedIn ? ( // Show "Login" if not logged in
               <li>
                 <Link aria-label="Login" className="link-hover" to="/login">
