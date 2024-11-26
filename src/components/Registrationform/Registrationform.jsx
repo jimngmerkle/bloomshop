@@ -4,13 +4,13 @@ import toast from "react-hot-toast";
 import { useAuth } from "../../utils/AuthContext"; 
 
 const Registrationform = () => {
-  const [email, set_email] = useState("");
+  const [email, set_local_email] = useState("");
   const [first_name, set_first_name] = useState("");
   const [last_name, set_last_name] = useState("");
   const [password, set_password] = useState("");
   const apiUrl = 'https://qijqngdxdc.execute-api.eu-west-2.amazonaws.com/stage'; 
   const navigate = useNavigate(); 
-  const { setIsLoggedIn } = useAuth(); // Access the AuthContext to update login state
+  const { setIsLoggedIn, setEmail } = useAuth(); // Access the AuthContext to update login state and email
 
   const checkEmail = async (email) => {
     try {
@@ -55,9 +55,10 @@ const Registrationform = () => {
             'last_name': last_name
           });
         setIsLoggedIn(true); // Update global login state
+        setEmail(email);
         setTimeout(() => {
           navigate("/"); // Redirect after a delay
-        }, 1500);         
+        }, 1000);         
       } else {
         toast.error('An error occurred during registration');
         console.log('An error occurred during registration');
@@ -93,7 +94,7 @@ const Registrationform = () => {
                 type="text"
                 name="email"
                 value={email}
-                onChange={(e) => set_email(e.target.value)}
+                onChange={(e) => set_local_email(e.target.value)}
               />
             </label>
             <label className="label">
