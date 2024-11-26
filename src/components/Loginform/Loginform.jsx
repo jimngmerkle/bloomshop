@@ -42,7 +42,7 @@ const Loginform = () => {
         exponea.identify(email); 
         setTimeout(() => {
           navigate("/"); 
-        }, 1500);
+        }, 1000);
       } else if (response.status === 404) {
         toast.error(`Email ${email} does not exist in the database`);
         console.log(`Email ${email} does not exist in the database`);

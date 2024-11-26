@@ -8,11 +8,12 @@ import Allproductspage from "../pages/all-productspage/Allproductspage";
 import Singleproductpage from "../pages/product-details/Singleproductpage";
 import ErrorNotFound from "../components/ErrorNotFoundPage/ErrorNotFound";
 import ScrollToTop from "../components/ScrollToTop";
+import Subscriptionpage from "../pages/subscriptionpage/Subscriptionpage"; 
 
 const AllRoutes = ({
   productItems,
   cartItems,
-  addToCart,
+  addToCart,  
   shopItems,
   deleteFromCart,
   checkOut,
@@ -20,8 +21,6 @@ const AllRoutes = ({
   allProductsData,
 }) => {
   return (
-    // setting up all the routes here with react-router dom and sending necessary props to each child element all the routing is being done here
-    // different components are being sent as elements when going for different routes they're stored in the pages folder
     <>
       <BrowserRouter>
         <ScrollToTop />
@@ -50,6 +49,7 @@ const AllRoutes = ({
             }
           />
           <Route path="/login" element={<Loginpage cartItems={cartItems} />} />
+          <Route path="/subscriptionpage" element={<Subscriptionpage cartItems={cartItems} />} />
           <Route
             path="/registration"
             element={<Registrationpage cartItems={cartItems} />}
