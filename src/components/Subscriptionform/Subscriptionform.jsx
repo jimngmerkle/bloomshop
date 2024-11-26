@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import './Subscriptionform.css';
 
 const Subscriptionform = () => {
-  const { email } = useAuth(); // Access email from AuthContext
+  const { email } = useAuth(); // Access email from AuthContext 
   const [categories, setCategories] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const apiUrl = 'https://3n6bfpscgf.execute-api.eu-west-2.amazonaws.com/test';
