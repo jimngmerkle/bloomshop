@@ -7,7 +7,7 @@ const Subscriptionform = () => {
   const { email } = useAuth(); // Access email from AuthContext
   const [categories, setCategories] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const apiUrl = import.meta.env.VITE_APP_API_URL || 'http://localhost:5173';
+  const apiUrl = 'https://qijqngdxdc.execute-api.eu-west-2.amazonaws.com/stage';
 
   useEffect(() => {
     const fetchConsents = async () => {
