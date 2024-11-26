@@ -7,6 +7,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/updateConsentFunction": {
+      "name": "/updateConsentFunction",
+      "lambdaFunction": "updateConsentFunction",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

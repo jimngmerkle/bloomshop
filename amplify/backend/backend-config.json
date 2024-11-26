@@ -9,6 +9,14 @@
           ],
           "category": "function",
           "resourceName": "checkEmailFunction"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "updateConsentFunction"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -24,7 +32,15 @@
     },
     "updateConsentFunction": {
       "build": true,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "checkEmailFunction"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
@@ -71,6 +87,22 @@
       ]
     },
     "AMPLIFY_function_updateConsentFunction_bloomreachProjectId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateConsentFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateConsentFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateConsentFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateConsentFunction_s3Key": {
       "usedBy": [
         {
           "category": "function",

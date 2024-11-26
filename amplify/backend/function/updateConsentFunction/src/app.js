@@ -1,4 +1,8 @@
-const express = require('express');
+/* Amplify Params - DO NOT EDIT
+	ENV
+	FUNCTION_CHECKEMAILFUNCTION_NAME
+	REGION
+Amplify Params - DO NOT EDIT */const express = require('express');
 const bodyParser = require('body-parser');
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
 const https = require('https');

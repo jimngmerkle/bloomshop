@@ -9,5 +9,14 @@
       "cloudFormationParameterName": "bloomreachApiKey",
       "environmentVariableName": "BLOOMREACH_API_KEY"
     }
-  ]
+  ],
+  "permissions": {
+    "function": {
+      "checkEmailFunction": [
+        "create",
+        "read",
+        "update"
+      ]
+    }
+  }
 }
