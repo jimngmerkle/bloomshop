@@ -21,6 +21,12 @@
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "updateConsentFunction": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -53,6 +59,22 @@
         {
           "category": "function",
           "resourceName": "checkEmailFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateConsentFunction_bloomreachApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateConsentFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateConsentFunction_bloomreachProjectId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateConsentFunction"
         }
       ]
     }

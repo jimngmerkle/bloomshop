@@ -1,0 +1,13 @@
+{
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "bloomreachProjectId",
+      "environmentVariableName": "BLOOMREACH_PROJECT_ID"
+    },
+    {
+      "cloudFormationParameterName": "bloomreachApiKey",
+      "environmentVariableName": "BLOOMREACH_API_KEY"
+    }
+  ]
+}

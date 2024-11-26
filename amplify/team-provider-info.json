@@ -38,7 +38,11 @@
           "bloomreachProjectId": "6dce00a6-25ba-11eb-9cc7-7e4f7e40a7d0",
           "bloomreachApiKey": "Y3JuNzAwZ2Y2c2RoMmVjOXVlbWJsOWg2eWdxZmg2OWIxbmtzN2d6dWJ1MDdjZWo1dmZ4aXVmMTVwb2NoOTdsdzpmb2NuemxnbTdjc2IyMWNxY3hqNDhpMnpnOHpwZDIzdDlkYzNlYmU2aTNvem93ZzFqaWsxOGZkNDY0a2RiYWFz",
           "deploymentBucketName": "amplify-merkleshop-stage-8b790-deployment",
-          "s3Key": "amplify-builds/checkEmailFunction-5456534861397137526d-build.zip"
+          "s3Key": "amplify-builds/checkEmailFunction-57526b70457877783545-build.zip"
+        },
+        "updateConsentFunction": {
+          "bloomreachProjectId": "6dce00a6-25ba-11eb-9cc7-7e4f7e40a7d0",
+          "bloomreachApiKey": "Y3JuNzAwZ2Y2c2RoMmVjOXVlbWJsOWg2eWdxZmg2OWIxbmtzN2d6dWJ1MDdjZWo1dmZ4aXVmMTVwb2NoOTdsdzpmb2NuemxnbTdjc2IyMWNxY3hqNDhpMnpnOHpwZDIzdDlkYzNlYmU2aTNvem93ZzFqaWsxOGZkNDY0a2RiYWFz"
         }
       },
       "api": {
