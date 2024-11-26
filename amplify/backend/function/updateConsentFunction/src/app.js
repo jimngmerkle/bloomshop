@@ -12,7 +12,7 @@ const BLOOMREACH_PROJECT_ID = process.env.BLOOMREACH_PROJECT_ID;
 const BLOOMREACH_API_KEY = process.env.BLOOMREACH_API_KEY;
 const BLOOMREACH_CONSENT_API_URL = `https://api-demoapp.exponea.com/track/v2/projects/${BLOOMREACH_PROJECT_ID}/batch`;
 
-
+ 
 // Declare a new express app
 const app = express();
 app.use(bodyParser.json());
