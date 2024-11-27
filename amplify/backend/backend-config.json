@@ -1,0 +1,72 @@
+{
+  "api": {
+    "brAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "checkEmailFn"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "updateConsentFn"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "checkEmailFn": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "updateConsentFn": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_checkEmailFn_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "checkEmailFn"
+        }
+      ]
+    },
+    "AMPLIFY_function_checkEmailFn_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "checkEmailFn"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateConsentFn_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateConsentFn"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateConsentFn_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateConsentFn"
+        }
+      ]
+    }
+  }
+}

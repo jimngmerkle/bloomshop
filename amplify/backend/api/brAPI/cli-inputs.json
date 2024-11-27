@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "paths": {
+    "/check-email": {
+      "name": "/check-email",
+      "lambdaFunction": "checkEmailFn",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/update-consent": {
+      "name": "/update-consent",
+      "lambdaFunction": "updateConsentFn",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-merkleshop-dev-93f58-authRole",
+      "UnauthRoleArn": "arn:aws:iam::253790414783:role/amplify-merkleshop-dev-93f58-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::253790414783:role/amplify-merkleshop-dev-93f58-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-merkleshop-dev-93f58-deployment",
+      "UnauthRoleName": "amplify-merkleshop-dev-93f58-unauthRole",
+      "StackName": "amplify-merkleshop-dev-93f58",
+      "StackId": "arn:aws:cloudformation:eu-west-2:253790414783:stack/amplify-merkleshop-dev-93f58/b2457a50-ac9f-11ef-9733-028186730235",
+      "AmplifyAppId": "d3n1ajrpem3qvj"
+    }
+  },
+  "tst": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-merkleshop-tst-f2de3-authRole",
+      "UnauthRoleArn": "arn:aws:iam::253790414783:role/amplify-merkleshop-tst-f2de3-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::253790414783:role/amplify-merkleshop-tst-f2de3-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
+      "UnauthRoleName": "amplify-merkleshop-tst-f2de3-unauthRole",
+      "StackName": "amplify-merkleshop-tst-f2de3",
+      "StackId": "arn:aws:cloudformation:eu-west-2:253790414783:stack/amplify-merkleshop-tst-f2de3/c7dd03f0-aca0-11ef-8ead-02c4cc1a201f",
+      "AmplifyAppId": "da7anuwx8hniw"
+    },
+    "categories": {
+      "function": {
+        "checkEmailFn": {
+          "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
+          "s3Key": "amplify-builds/checkEmailFn-357857686c50526f344a-build.zip"
+        },
+        "updateConsentFn": {
+          "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
+          "s3Key": "amplify-builds/updateConsentFn-4a623369324953456635-build.zip"
+        }
+      },
+      "api": {
+        "brAPI": {}
+      }
+    }
+  }
+}
