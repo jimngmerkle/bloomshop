@@ -12,6 +12,7 @@ const Subscriptionform = () => {
   useEffect(() => {
     const fetchConsents = async () => {
       try {
+        // Get current consent information for a specified customer. This is a definition of the Customer attributes method used to retrieve customer consents.
         const response = await fetch(`${apiUrl}/check-email`, {
           method: 'POST',
           headers: {

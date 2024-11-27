@@ -13,6 +13,7 @@ const Loginform = () => {
 
   const checkEmail = async (email) => {
     try {
+      // Check if email exists in Bloomreach
       const response = await fetch(`${apiUrl}/check-email`, {
         method: 'POST',
         headers: {
