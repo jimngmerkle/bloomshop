@@ -47,7 +47,7 @@ const Navbar = () => {
             )}            
             {!isLoggedIn ? ( // Show "Login" if not logged in
               <li>
-                <Link aria-label="Login" className="link-hover" to="/login">
+                <Link aria-label="Login" className="link-hover" to="/login"> 
                   Login
                 </Link>
               </li>
