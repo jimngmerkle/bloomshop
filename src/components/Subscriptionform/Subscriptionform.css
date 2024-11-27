@@ -61,7 +61,10 @@
   }
   
   /* Product Related CSS */
-  
+  .content {
+    margin-left: 20px;
+  }
+
   .product {
     background: #fff;
     padding: 20px;
