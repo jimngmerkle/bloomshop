@@ -29,6 +29,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getConsentFn": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "updateConsentFn": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -49,6 +54,22 @@
         {
           "category": "function",
           "resourceName": "checkEmailFn"
+        }
+      ]
+    },
+    "AMPLIFY_function_getConsentFn_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getConsentFn"
+        }
+      ]
+    },
+    "AMPLIFY_function_getConsentFn_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getConsentFn"
         }
       ]
     },

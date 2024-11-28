@@ -33,6 +33,10 @@
         "updateConsentFn": {
           "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
           "s3Key": "amplify-builds/updateConsentFn-4a623369324953456635-build.zip"
+        },
+        "getConsentFn": {
+          "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
+          "s3Key": "amplify-builds/getConsentFn-7a7276714365446e344e-build.zip"
         }
       },
       "api": {
