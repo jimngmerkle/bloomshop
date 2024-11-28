@@ -81,7 +81,6 @@ app.get('/get-consent', function(req, res) {
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   });
 
-  apiReq.write(JSON.stringify(payload));
   apiReq.end();
 });
 
