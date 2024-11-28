@@ -78,7 +78,6 @@ function App() {
       console.log('logged in.');
     }
   
-    console.log("Cart contents:");
     const purchase = cartItems.map((item) => ({
       id: item.id,
       name: item.name,
@@ -86,8 +85,8 @@ function App() {
       price: item.price,
     }));
   
-    console.log(purchase);
     await exponea.track('purchase', { purchase });
+    console.log(`exponea.track('purchase', ${JSON.stringify(purchase, null, 2)});`);
     setCartItems([]);
     toast.success("Order placed, Thanks!!");
     setIsModalOpen(false);

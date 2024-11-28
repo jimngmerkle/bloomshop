@@ -14,28 +14,30 @@ const Registrationform = () => {
 
   const checkEmail = async (email) => {
     try {
+      const payload = {
+        customer_ids: {
+          registered: email
+        },
+        attributes: [
+          {
+            type: 'id',
+            id: 'registered'
+          }
+        ]
+      };
+      console.log('Sending request to /check-email with payload:', payload);
+
       // Make a POST request to the /api/check-email endpoint
       const response = await fetch(`${apiUrl}/check-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          customer_ids: {
-            registered: email
-          },
-          attributes: [
-            {
-              type: 'id',
-              id: 'registered'
-            }
-          ]
-        })
+        body: JSON.stringify(payload)
       });
 
-      // Parse the JSON response
       const data = await response.json();
-      console.log('data:', data);
+      console.log('Response from /check-email:', data);
 
       if (data.success) {
         toast.error(`Email ${email} already exists in the database`);
@@ -71,6 +73,7 @@ const Registrationform = () => {
 
   const handleRegister= (event) => {
     event.preventDefault();
+    console.log('Registering with email:', email); 
     checkEmail(email);
   };
 
