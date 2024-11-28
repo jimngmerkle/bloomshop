@@ -56,6 +56,15 @@ const Registrationform = () => {
             'first_name': first_name,
             'last_name': last_name
           });
+          console.log(`exponea.identify(
+            {
+              'registered': '${email}'
+            },
+            {
+              'first_name': '${first_name}',
+              'last_name': '${last_name}'
+            }
+          );`);  
         setIsLoggedIn(true); // Update global login state
         setEmail(email);
         setTimeout(() => {
