@@ -12,15 +12,9 @@ const Search = ({ cartItems }) => {
       <section className="search">
         <div className="container c_flex">
           <div className="logo width">
-            <Link aria-label="Daraz Home" to="/">
+            <Link aria-label="Home" to="/">
               <img src="/assets/main-logo/shop.jpg" alt="" />
             </Link>
-          </div>
-
-          <div className="search-box f_flex">
-            <i className="fa fa-search"></i>
-            <input type="text" placeholder="Search here..." />
-            <span>All Categories</span>
           </div>
 
           <div className="icon f_flex width">
