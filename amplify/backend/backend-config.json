@@ -17,6 +17,14 @@
           ],
           "category": "function",
           "resourceName": "updateConsentFn"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "getConsentFn"
         }
       ],
       "providerPlugin": "awscloudformation",

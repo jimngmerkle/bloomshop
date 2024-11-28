@@ -53,15 +53,6 @@ app.post('/api/*', function(req, res) {
 * Get consent GET method *
 ****************************/
 
-app.get('/api', function(req, res) {
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
-app.get('/api/*', function(req, res) {
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
-
 app.get('/get-consent', function(req, res) {
   
   const options = {
