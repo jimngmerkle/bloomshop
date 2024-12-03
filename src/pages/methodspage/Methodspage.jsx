@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from "../../utils/AuthContext"; 
 import toast from "react-hot-toast";
-import './Methodsform.css';
 
 const Methodsform = () => {
   const { email } = useAuth(); 
