@@ -41,13 +41,22 @@ const Navbar = () => {
                   className="link-hover"
                   to="/subscriptionpage"
                 >
-                  Subscription Preferences
+                  Preferences
                 </Link>
               </li>
-            )}            
+            )}
+            <li>
+              <Link
+                aria-label="SDK Methods"
+                className="link-hover"
+                to="/methodspage"
+              >
+                SDK Methods
+              </Link>
+            </li>            
             {!isLoggedIn ? ( // Show "Login" if not logged in
               <li>
-                <Link aria-label="Login" className="link-hover" to="/login"> 
+                <Link aria-label="Login" className="link-hover" to="/login">
                   Login
                 </Link>
               </li>
