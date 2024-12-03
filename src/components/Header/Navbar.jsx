@@ -73,7 +73,7 @@ const Navbar = () => {
             )}
             <li>
               <Link
-                aria-label="Registration"
+                aria-label="Registration" 
                 className="link-hover"
                 to="/registration"
               >
