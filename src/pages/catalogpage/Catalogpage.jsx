@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Catalogform from "../../components/Catalog/Catalogform";
+import Catalogform from "../../components/Catalogform/Catalogform";
 
 const Catalogpage = ({ cartItems }) => {
   return (
