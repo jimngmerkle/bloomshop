@@ -37,6 +37,14 @@
         "getConsentFn": {
           "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
           "s3Key": "amplify-builds/getConsentFn-56464a30783144597278-build.zip"
+        },
+        "populateCatalogFn": {
+          "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
+          "s3Key": "amplify-builds/populateCatalogFn-6e6c4f6a43506a627565-build.zip"
+        },
+        "createCatalogFn": {
+          "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
+          "s3Key": "amplify-builds/createCatalogFn-6c2b4c656a4266725763-build.zip"
         }
       },
       "api": {

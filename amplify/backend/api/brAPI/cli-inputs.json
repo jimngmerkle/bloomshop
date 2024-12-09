@@ -21,6 +21,20 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/populate-catalog/{catalogId}": {
+      "name": "/populate-catalog/{catalogId}",
+      "lambdaFunction": "populateCatalogFn",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/create-catalog": {
+      "name": "/create-catalog",
+      "lambdaFunction": "createCatalogFn",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }
