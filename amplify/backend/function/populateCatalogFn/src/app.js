@@ -6,7 +6,6 @@ const https = require('https');
 // Amplify Params - DO NOT EDIT
 const BLOOMREACH_PROJECT_ID = process.env.BLOOMREACH_PROJECT_ID;
 const BLOOMREACH_API_KEY = process.env.BLOOMREACH_API_KEY;
-const BLOOMREACH_API_URL = `https://api-demoapp.exponea.com/data/v2/projects/${BLOOMREACH_PROJECT_ID}/catalogs/${catalogId}/items`;
 
 // Declare a new express app
 const app = express();
@@ -25,42 +24,34 @@ app.use(function(req, res, next) {
   }
 });
 
-/**********************
- * Example get method *
- **********************/
-
-app.get('/api', function(req, res) {
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
-app.get('/api/*', function(req, res) {
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
-/****************************
-* Example post method *
-****************************/
-
-app.post('/api', function(req, res) {
-  res.json({success: 'post call succeed!', url: req.url, body: req.body});
-});
-
-app.post('/api/*', function(req, res) {
-  res.json({success: 'post call succeed!', url: req.url, body: req.body});
-});
-
 /****************************
 * POPULATE CATALOG PUT method *
 ****************************/
 
-app.put('/populate-catalog', function(req, res) {
-  
+app.put('/populate-catalog/:catalogId', function(req, res) {
+  const catalogId = req.params.catalogId;
+  const payload = req.body;
+  const BLOOMREACH_API_URL = `https://api-demoapp.exponea.com/data/v2/projects/${BLOOMREACH_PROJECT_ID}/catalogs/${catalogId}/items`;
+
   const options = {
     method: 'PUT',
     headers: {
       'Authorization': `Basic ${BLOOMREACH_API_KEY}`,
-      'Content-Type': 'application/json'  }
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(JSON.stringify(payload))
+    }
   };
+
+  let requestBody;
+  try {
+    requestBody = req.body;
+  } catch (error) {
+    console.error("Error parsing request body:", error);
+    return res.status(400).json({ success: false, error: 'Invalid JSON in request body' });
+  }
+
+  console.log("Sending request to Bloomreach API:", BLOOMREACH_API_URL);
+  console.log("Request body:", JSON.stringify(requestBody));
 
   const apiReq = https.request(BLOOMREACH_API_URL, options, (apiRes) => {
     let apiData = '';
@@ -72,46 +63,22 @@ app.put('/populate-catalog', function(req, res) {
       if (apiRes.statusCode === 200) {
         res.status(200).json({ success: true, data: apiData });
       } else {
+        console.error("Bloomreach API error:", apiData);
         res.status(apiRes.statusCode).json({ success: false, error: apiData });
       }
     });
   });
 
   apiReq.on('error', (error) => {
+    console.error("Error in API request:", error);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   });
 
+  apiReq.write(JSON.stringify(requestBody));
   apiReq.end();
-});
-
-/****************************
-* Example put method *
-****************************/
-
-app.put('/api', function(req, res) {
-  res.json({success: 'put call succeed!', url: req.url, body: req.body});
-});
-
-app.put('/api/*', function(req, res) {
-  res.json({success: 'put call succeed!', url: req.url, body: req.body});
-});
-
-/****************************
-* Example delete method *
-****************************/
-
-app.delete('/api', function(req, res) {
-  res.json({success: 'delete call succeed!', url: req.url});
-});
-
-app.delete('/api/*', function(req, res) {
-  res.json({success: 'delete call succeed!', url: req.url});
 });
 
 app.listen(3000, function() {
 });
 
-// Export the app object. When executing the application local this does nothing. However,
-// to port it to AWS Lambda we will create a wrapper around that will load the app from
-// this file
 module.exports = app;

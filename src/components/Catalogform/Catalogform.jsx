@@ -23,9 +23,11 @@ const Catalogform = () => {
         name: catalogName,
         is_product_catalog: true,
         fields: [
-          { name: "field_text", type: "string", searchable: true },
-          { name: "field_date", type: "date", searchable: true },
-          { name: "field_number", type: "number", searchable: true }
+          { name: "title", type: "string", searchable: true },
+          { name: "description", type: "string", searchable: true },
+          { name: "price", type: "number", searchable: true },
+          { name: "category", type: "string", searchable: true },
+          { name: "image", type: "string", searchable: true }
         ]
       };
 
@@ -51,32 +53,24 @@ const Catalogform = () => {
           console.log('Catalog creation result:', result);
           console.log("catalogId: ", catalogId);
           
-          // Using test data for the populate-catalog call
-          const testData = [
-            {
-              "item_id": "1",
-              "properties": {
-                "field_date": "01012024",
-                "field_number": "123",
-                "field_text": "mytext"
-              }
-            },
-            {
-              "item_id": "2",
-              "properties": {
-                "field_date": "02012024",
-                "field_number": "234",
-                "field_text": "mytext2"
-              }
+          // Transform the fetched products data to match the required format
+          const transformedData = data.map(product => ({
+            item_id: product.id.toString(),
+            properties: {
+              title: product.title,
+              description: product.description,
+              price: product.price,
+              category: product.category,
+              image: product.image
             }
-          ];
+          }));
 
           const populateResponse = await fetch(`${apiUrl}/populate-catalog/${catalogId}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(testData)
+            body: JSON.stringify(transformedData)
           });
 
           if (populateResponse.ok) {

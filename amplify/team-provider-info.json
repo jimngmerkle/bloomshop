@@ -40,7 +40,7 @@
         },
         "populateCatalogFn": {
           "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
-          "s3Key": "amplify-builds/populateCatalogFn-6e6c4f6a43506a627565-build.zip"
+          "s3Key": "amplify-builds/populateCatalogFn-335a597351682f342b57-build.zip"
         },
         "createCatalogFn": {
           "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
