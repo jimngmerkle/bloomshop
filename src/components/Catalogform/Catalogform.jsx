@@ -21,7 +21,7 @@ const Catalogform = () => {
       } else {
         const error = JSON.parse(result.error);
         toast.error(`${errorMessage}: ${error.errors.name.join(', ')}`);
-        console.error(errorMessage, result);
+        console.error(`${errorMessage}: ${result.error}`);
       }
     } else {
       toast.error(errorMessage);
@@ -125,20 +125,6 @@ const Catalogform = () => {
       <br />
       <button className="btn-primary" onClick={fetchProducts}>Generate catalog in Bloomreach</button>
       <br />
-      <div>
-        {products.length > 0 && (
-          <ul>
-            {products.map(product => (
-              <li key={product.id}>{product.title} - ${product.price}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div>
-        {catalogId && (
-          <p>Catalog created with ID: <strong>{catalogId}</strong></p>
-        )}
-      </div>
     </div>
   );
 };
