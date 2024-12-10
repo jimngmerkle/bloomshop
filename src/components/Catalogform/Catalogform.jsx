@@ -114,6 +114,8 @@ const Catalogform = () => {
     <div className="content">
       <p>Current user: <strong>{email}</strong></p>
       <br />
+      <p>Add a new catalog with fakestoreapi data (see <a href="https://fakestoreapi.com/docs" target="_new">https://fakestoreapi.com/docs</a>)</p>
+      <br />
       <span>Enter a catalog name: </span>
       <textarea 
         type="text" 
