@@ -6,19 +6,32 @@ import './Catalogform.css';
 const Catalogform = () => {
   const { email } = useAuth(); 
   const [products, setProducts] = useState([]);
-  const [catalogName, setCatalogName] = useState(''); // New state for catalog name
-  const [catalogId, setCatalogId] = useState(null); // New state to store catalog ID
-  const [recordLimit, setRecordLimit] = useState(5); // New state for record limit
+  const [catalogName, setCatalogName] = useState(''); 
+  const [catalogId, setCatalogId] = useState(null); 
+  const [recordLimit, setRecordLimit] = useState(); 
   const apiUrl = 'https://5e0mja4gfl.execute-api.eu-west-2.amazonaws.com/tst';
+
+  const handleResponse = async (response, successMessage, errorMessage) => {
+    if (response.ok) {
+      const result = await response.json();
+      if (result.success) {
+        toast.success(successMessage);
+        console.log(successMessage, result);
+        return result;
+      } else {
+        const error = JSON.parse(result.error);
+        toast.error(`${errorMessage}: ${error.errors.name.join(', ')}`);
+        console.error(errorMessage, result);
+      }
+    } else {
+      toast.error(errorMessage);
+      console.error(errorMessage, response.statusText);
+    }
+    return null;
+  };
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`https://fakestoreapi.com/products?limit=${recordLimit}`);
-      const data = await response.json();
-      setProducts(data);
-      console.log('fake catalog data:', data);
-      toast.success('Products fetched successfully!');
-
       // Create the payload for the create-catalog API call
       const payload = {
         name: catalogName,
@@ -41,19 +54,21 @@ const Catalogform = () => {
         body: JSON.stringify(payload)
       });
 
-      if (catalogResponse.ok) {
-        const result = await catalogResponse.json();
-        if (result.success) {
-          toast.success('Catalog created successfully in Bloomreach!');
-          
-          // Parse the data field to get the catalog ID
-          const parsedData = JSON.parse(result.data);
-          const catalogId = parsedData.id;
-          
-          setCatalogId(catalogId); // Store the catalog ID
-          console.log('Catalog creation result:', result);
-          console.log("catalogId: ", catalogId);
-          
+      const catalogResult = await handleResponse(catalogResponse, 'Catalog created successfully in Bloomreach!', 'Error creating catalog');
+      if (catalogResult) {
+        const parsedData = JSON.parse(catalogResult.data);
+        const catalogId = parsedData.id;
+        setCatalogId(catalogId);
+        console.log("catalogId: ", catalogId);
+
+        // Fetch products from fakestoreapi
+        const response = await fetch(`https://fakestoreapi.com/products?limit=${recordLimit}`);
+        if (response.ok) {
+          const data = await response.json();
+          setProducts(data);
+          console.log('fake catalog data:', data);
+          toast.success('Products fetched successfully!');
+
           // Transform the fetched products data to match the required format
           const transformedData = data.map(product => ({
             item_id: product.id.toString(),
@@ -74,26 +89,11 @@ const Catalogform = () => {
             body: JSON.stringify(transformedData)
           });
 
-          if (populateResponse.ok) {
-            const populateResult = await populateResponse.json();
-            if (populateResult.success) {
-              toast.success('Catalog populated successfully in Bloomreach!');
-              console.log('Catalog population result:', populateResult);
-            } else {
-              toast.error('Error populating catalog in Bloomreach');
-              console.error('Error populating catalog:', populateResult);
-            }
-          } else {
-            toast.error('Error populating catalog in Bloomreach');
-            console.error('Error populating catalog:', populateResponse.statusText);
-          }
+          await handleResponse(populateResponse, 'Catalog populated successfully in Bloomreach!', 'Error populating catalog');
         } else {
-          toast.error('Error creating catalog in Bloomreach');
-          console.error('Error creating catalog:', result);
+          toast.error('Error fetching products from fakestoreapi');
+          console.error('Error fetching products:', response.statusText);
         }
-      } else {
-        toast.error('Error creating catalog in Bloomreach');
-        console.error('Error creating catalog:', catalogResponse.statusText);
       }
     } catch (error) {
       console.error('Error fetching products:', error);
