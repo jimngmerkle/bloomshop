@@ -86,11 +86,11 @@ const Catalogform = () => {
               }
             } else {
               toast.error('Error populating catalog in Bloomreach');
-              console.error('Error populating catalog:', populateResponse.statusText);
+              console.error('Error populating catalog:', populateResponse.status);
             }
           } else {
             toast.error('Error fetching products from fakestoreapi');
-            console.error('Error fetching products:', response.statusText);
+            console.error('Error fetching products:', response.status);
           }
         } else {
           const error = JSON.parse(catalogResult.error);
@@ -98,8 +98,8 @@ const Catalogform = () => {
           console.error('Error creating catalog:', catalogResult.error);
         }
       } else {
-        toast.error('Error creating catalog in Bloomreach');
-        console.error('Error creating catalog:', catalogResponse.statusText);
+        toast.error('Error creating catalog in Bloomreach: ', catalogResponse.status);
+        console.error('Error creating catalog:', catalogResponse.status);
       }
     } catch (error) {
       console.error('Error fetching products:', error);
