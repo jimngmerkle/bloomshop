@@ -8,11 +8,12 @@ const Catalogform = () => {
   const [products, setProducts] = useState([]);
   const [catalogName, setCatalogName] = useState(''); // New state for catalog name
   const [catalogId, setCatalogId] = useState(null); // New state to store catalog ID
+  const [recordLimit, setRecordLimit] = useState(5); // New state for record limit
   const apiUrl = 'https://5e0mja4gfl.execute-api.eu-west-2.amazonaws.com/tst';
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('https://fakestoreapi.com/products?limit=5');
+      const response = await fetch(`https://fakestoreapi.com/products?limit=${recordLimit}`);
       const data = await response.json();
       setProducts(data);
       console.log('fake catalog data:', data);
@@ -111,6 +112,15 @@ const Catalogform = () => {
         value={catalogName} 
         className="text-box"
         onChange={(e) => setCatalogName(e.target.value)} 
+      />
+      <br />
+      <span>Enter number of records: </span>
+      <input 
+        type="number" 
+        placeholder="Number of records" 
+        value={recordLimit} 
+        className="text-box"
+        onChange={(e) => setRecordLimit(e.target.value)} 
       />
       <br />
       <button className="btn-primary" onClick={fetchProducts}>Generate catalog in Bloomreach</button>
