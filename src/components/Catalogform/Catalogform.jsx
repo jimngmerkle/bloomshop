@@ -8,7 +8,7 @@ const Catalogform = () => {
   const [products, setProducts] = useState([]);
   const [catalogName, setCatalogName] = useState(''); 
   const [catalogId, setCatalogId] = useState(null); 
-  const [recordLimit, setRecordLimit] = useState(); 
+  const [recordLimit, setRecordLimit] = useState(10); 
   const apiUrl = 'https://5e0mja4gfl.execute-api.eu-west-2.amazonaws.com/tst';
 
   const fetchProducts = async () => {
