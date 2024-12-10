@@ -44,6 +44,7 @@ const Catalogform = () => {
           const parsedData = JSON.parse(catalogResult.data);
           const catalogId = parsedData.id;
           setCatalogId(catalogId);
+          console.log("catalogId: ", catalogId);
 
           // Fetch products from fakestoreapi
           const response = await fetch(`https://fakestoreapi.com/products?limit=${recordLimit}`);
