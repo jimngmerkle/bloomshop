@@ -121,6 +121,9 @@ const Subscriptionform = () => {
         toast.success('Settings saved!');
         console.log('Consent data: ', payload);
 
+          // Update initialCategories to reflect the latest changes
+            setInitialCategories(categories);
+
         // Handle web push subscription/unsubscription
         payload.commands.forEach(command => {
           const { category, action } = command.data.properties;
