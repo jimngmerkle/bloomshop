@@ -120,6 +120,21 @@ const Subscriptionform = () => {
         setIsSubmitted(true);
         toast.success('Settings saved!');
         console.log('Consent data: ', payload);
+
+        // Handle web push subscription/unsubscription
+        changedCategories.forEach(category => {
+          if (category.name === "web push") {
+            if (category.valid) {
+              exponea.notifications.subscribe(function(status) {
+                console.log('Subscription status:', status); // status could be: error / permission-denied / subscribed
+              });
+            } else {
+              exponea.notifications.unsubscribe(function(status) {
+                console.log('Unsubscription status:', status); // status could be: error / unsubscribed
+              });
+            }
+          }
+        });
       } else {
         toast.error('Error updating consents');
         console.log('Error updating consents');
