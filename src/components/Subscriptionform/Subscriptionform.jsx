@@ -122,15 +122,16 @@ const Subscriptionform = () => {
         console.log('Consent data: ', payload);
 
         // Handle web push subscription/unsubscription
-        changedCategories.forEach(category => {
-          if (category.name === "web push") {
-            if (category.valid) {
+        payload.commands.forEach(command => {
+          const { category, action } = command.data.properties;
+          if (category === "web push") {
+            if (action === "accept") {
               exponea.notifications.subscribe(function(status) {
-                console.log('Subscription status:', status); // status could be: error / permission-denied / subscribed
+                console.log('Subscription status:', status); 
               });
-            } else {
+            } else if (action === "reject") {
               exponea.notifications.unsubscribe(function(status) {
-                console.log('Unsubscription status:', status); // status could be: error / unsubscribed
+                console.log('Unsubscription status:', status); 
               });
             }
           }
