@@ -11,7 +11,7 @@ import ScrollToTop from "../components/ScrollToTop";
 import Subscriptionpage from "../pages/subscriptionpage/Subscriptionpage"; 
 import Methodspage from "../pages/methodspage/Methodspage";
 import Catalogpage from "../pages/catalogpage/Catalogpage";
-import Typeformpage from "../pages/typeformpage/Typeformpage";
+import Miscformpage from "../pages/miscpage/Miscformpage";
 
 const AllRoutes = ({
   productItems,
@@ -55,7 +55,7 @@ const AllRoutes = ({
           <Route path="/subscriptionpage" element={<Subscriptionpage cartItems={cartItems} />} />
           <Route path="/methodspage" element={<Methodspage cartItems={cartItems} />} />
           <Route path="/catalogpage" element={<Catalogpage cartItems={cartItems} />} />
-          <Route path="/typeformpage" element={<Typeformpage cartItems={cartItems} />} />
+          <Route path="/miscformpage" element={<Miscformpage cartItems={cartItems} />} />
           <Route
             path="/registration"
             element={<Registrationpage cartItems={cartItems} />}

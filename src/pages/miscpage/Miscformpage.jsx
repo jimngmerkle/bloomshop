@@ -1,16 +1,16 @@
 import React from "react";
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Typeform from "../../components/Typeform/Typeform";
+import Miscform from "../../components/Miscform/Miscform";
 
-const Typeformpage = ({ cartItems }) => {
+const Miscformpage = ({ cartItems }) => {
   return (
     <>
       <Header cartItems={cartItems} />
-      <Typeform />
+      <Miscform />
       <Footer />
     </>
   );
 };
 
-export default Typeformpage;
+export default Miscformpage;

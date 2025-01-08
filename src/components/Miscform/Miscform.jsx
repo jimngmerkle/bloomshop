@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useAuth } from "../../utils/AuthContext"; 
 import toast from "react-hot-toast";
-import './Typeform.css';
+import './Miscform.css';
 
-const Typeform = () => {
+const Miscform = () => {
   const { email } = useAuth(); 
   const [typeformUrl, setTypeformUrl] = useState('https://e0u55g5197k.typeform.com/to/MzfVzC9W'); 
 
@@ -40,4 +40,4 @@ const Typeform = () => {
   );
 };
 
-export default Typeform;
+export default Miscform;
