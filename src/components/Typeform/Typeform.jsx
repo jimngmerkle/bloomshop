@@ -20,6 +20,8 @@ const Typeform = () => {
       <p>Current user: <strong>{email}</strong></p>
       <br />
       <p>Test BR Omniconnect integration with a sample Typeform</p>
+      (note 10 response per month limit with free accounts)
+      <br />
       <br />
       <span>Enter a Typeform URL: </span>
       <textarea 
