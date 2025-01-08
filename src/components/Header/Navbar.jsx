@@ -62,7 +62,16 @@ const Navbar = () => {
               >
                 Catalog
               </Link>
-            </li>                   
+            </li>         
+            <li>
+              <Link
+                aria-label="Omniconnect"
+                className="link-hover"
+                to="/typeformpage"
+              >
+                Omniconnect
+              </Link>
+            </li>                         
             {!isLoggedIn ? ( // Show "Login" if not logged in
               <li>
                 <Link aria-label="Login" className="link-hover" to="/login">
