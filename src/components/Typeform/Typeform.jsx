@@ -19,9 +19,10 @@ const Typeform = () => {
     <div className="content">
       <p>Current user: <strong>{email}</strong></p>
       <br />
-      <p>Test BR Omniconnect integration with a sample Typeform</p>
-      (note 10 response per month limit with free accounts)
+      <p>Test Bloomreach Omniconnect functionality using a Typeform integration and <b><a href="https://api-demoapp.exponea.com/intg/webhook-handler/v1.0/650ce29b-b5f2-4f57-9e74-5abeaeaec120/callback" target="_new">test Omniconnect URL</a> </b></p>
+      (note Typeform's 10 responses per month limit for free accounts)
       <br />
+     
       <br />
       <span>Enter a Typeform URL: </span>
       <textarea 
