@@ -52,7 +52,7 @@ const Miscform = () => {
         console.log('transformed customer data:', transformedData);
 
         // Step 3: Send the transformed data to the specified endpoint
-        const exponeaResponse = await fetch('${apiUrl}/add-customers', {
+        const bloomreachResponse = await fetch('${apiUrl}/add-customers', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -60,10 +60,13 @@ const Miscform = () => {
           body: JSON.stringify(transformedData)
         });
 
-        if (exponeaResponse.ok) {
+        const bloomreachResponseData = await bloomreachResponse.json();
+        console.log('Response from Bloomreach API:', bloomreachResponseData);        
+
+        if (bloomreachResponse.ok) {
           toast.success('Customers added to Bloomreach successfully!');
         } else {
-          const errorText = await exponeaResponse.text();
+          const errorText = await bloomreachResponse.text();
           toast.error('Error adding customers to Bloomreach');
           console.error('Error adding customers to Bloomreach:', errorText);
         }
