@@ -39,7 +39,7 @@ const Miscform = () => {
 
   const addCustomers = async () => {
     try {
-      // Step 1: Call Mockaroo API to get test customers
+      // Step 1: Call Mockaroo api to get test customers
       const response = await fetch(`https://my.api.mockaroo.com/bloomreach_sandbox_customers.json?key=e4da9b70&count=${recordLimit}`);
       if (response.ok) {
         const data = await response.json();
