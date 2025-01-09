@@ -1,0 +1,22 @@
+{
+  "customers": [
+    {
+      "first_name": "Jim",
+      "last_name": "Ng",
+      "registered": "jim.ng+6@merkle.com",
+      "email": "jim.ng@merkle.com",
+      "gender": "Male",
+      "phone": "123 456 789",
+      "language": "en"
+    },
+    {
+      "first_name": "Bob",
+      "last_name": "Beam",
+      "registered": "bob.beam@merkle.com",
+      "email": "bob.beam@merkle.com",
+      "gender": "Female",
+      "phone": "972 679 4650",
+      "language": "es"
+    }
+  ]
+}

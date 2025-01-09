@@ -48,6 +48,11 @@
     }
   },
   "function": {
+    "addCustomersFn": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "checkEmailFn": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -75,6 +80,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_addCustomersFn_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addCustomersFn"
+        }
+      ]
+    },
+    "AMPLIFY_function_addCustomersFn_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "addCustomersFn"
+        }
+      ]
+    },
     "AMPLIFY_function_checkEmailFn_deploymentBucketName": {
       "usedBy": [
         {

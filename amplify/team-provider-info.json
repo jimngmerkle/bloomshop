@@ -45,6 +45,10 @@
         "createCatalogFn": {
           "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
           "s3Key": "amplify-builds/createCatalogFn-6c2b4c656a4266725763-build.zip"
+        },
+        "addCustomersFn": {
+          "deploymentBucketName": "amplify-merkleshop-tst-f2de3-deployment",
+          "s3Key": "amplify-builds/addCustomersFn-6b634f556e6b4f5a6b6a-build.zip"
         }
       },
       "api": {
