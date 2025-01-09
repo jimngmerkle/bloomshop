@@ -60,7 +60,7 @@ const Miscform = () => {
           body: JSON.stringify(transformedData)
         });
 
-        const bloomreachResponseData = await bloomreachResponse.json();
+        const bloomreachResponseData = await bloomreachResponse.text();
         console.log('Response from Bloomreach API:', bloomreachResponseData);        
 
         if (bloomreachResponse.ok) {
