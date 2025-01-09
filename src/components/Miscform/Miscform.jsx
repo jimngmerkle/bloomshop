@@ -52,7 +52,7 @@ const Miscform = () => {
         console.log('transformed customer data:', transformedData);
 
         // Step 3: Send the transformed data to the specified endpoint
-        const bloomreachResponse = await fetch('${apiUrl}/add-customers', {
+        const bloomreachResponse = await fetch('${apiUrl}/update-consent', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
