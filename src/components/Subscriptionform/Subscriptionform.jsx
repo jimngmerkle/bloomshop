@@ -122,7 +122,7 @@ const Subscriptionform = () => {
         console.log('Consent data: ', payload);
 
           // Update initialCategories to reflect the latest changes
-            setInitialCategories(categories);
+          setInitialCategories(categories);
 
         // Handle web push subscription/unsubscription
         payload.commands.forEach(command => {
