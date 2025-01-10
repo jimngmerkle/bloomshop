@@ -53,16 +53,7 @@ const Navbar = () => {
               >
                 SDK Methods
               </Link>
-            </li>      
-            <li>
-              <Link
-                aria-label="Catalog"
-                className="link-hover"
-                to="/catalogpage"
-              >
-                Catalog
-              </Link>
-            </li>         
+            </li>             
             <li>
               <Link
                 aria-label="Misc"

@@ -5,7 +5,8 @@ import './Miscform.css';
 
 const Miscform = () => {
   const { email } = useAuth(); 
-  const [recordLimit, setRecordLimit] = useState(10); 
+  const [customerRecordLimit, setCustomerRecordLimit] = useState(10);   
+  const [catalogRecordLimit, setCatalogRecordLimit] = useState(10);     
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);  
   const [catalogName, setCatalogName] = useState(''); 
@@ -56,7 +57,7 @@ const Miscform = () => {
           setCatalogId(catalogId);
 
           // Fetch products from fakestoreapi
-          const response = await fetch(`https://fakestoreapi.com/products?limit=${recordLimit}`);
+          const response = await fetch(`https://fakestoreapi.com/products?limit=${catalogRecordLimit}`);
           if (response.ok) {
             const data = await response.json();
             setProducts(data);
@@ -144,7 +145,7 @@ const Miscform = () => {
   const addCustomers = async () => {
     try {
       // Step 1: Call Mockaroo api to get test customers
-      const response = await fetch(`https://my.api.mockaroo.com/bloomreach_sandbox_customers.json?key=e4da9b70&count=${recordLimit}`);
+      const response = await fetch(`https://my.api.mockaroo.com/bloomreach_sandbox_customers.json?key=e4da9b70&count=${customerRecordLimit}`);
       if (response.ok) {
         const data = await response.json();
         setCustomers(data);
@@ -214,14 +215,15 @@ const Miscform = () => {
       <input 
         type="number" 
         placeholder="Number of records" 
-        value={recordLimit} 
+        value={customerRecordLimit} 
         className="text-box"
-        onChange={(e) => setRecordLimit(e.target.value)} 
+        onChange={(e) => setCustomerRecordLimit(e.target.value)} 
       />
       <button className="btn-primary" onClick={addCustomers}>Add customers to Bloomreach</button>
    
       <br /> 
-      <p>Add a new catalog in Bloomreach with fakestoreapi data (see <a href="https://fakestoreapi.com/docs" target="_new">https://fakestoreapi.com/docs</a>)</p>
+      <p><b>Add a new catalog in Bloomreach </b><br />
+      with fakestoreapi data (see <a href="https://fakestoreapi.com/docs" target="_new">https://fakestoreapi.com/docs</a>)</p>
       <br />
       <span>Enter a catalog name: </span>
       <textarea 
@@ -236,9 +238,9 @@ const Miscform = () => {
       <input 
         type="number" 
         placeholder="Number of records" 
-        value={recordLimit} 
+        value={catalogRecordLimit} 
         className="text-box"
-        onChange={(e) => setRecordLimit(e.target.value)} 
+        onChange={(e) => setCatalogRecordLimit(e.target.value)} 
       />
       <br />
       <button className="btn-primary" onClick={fetchProducts}>Generate catalog in Bloomreach</button>
