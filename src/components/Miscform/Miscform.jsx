@@ -103,7 +103,7 @@ const Miscform = () => {
       />
       <button className="btn-primary" onClick={openTypeform}>Open Typeform</button>
       <br />
-      <b>Add test customer data to Bloomreach from a test Mockaroo schema (first_name,last_name,registered,email,gender,phone,language)</b>
+      <b>Add test customer data to Bloomreach from a test Mockaroo schema</b> (first_name,last_name,registered,email,gender,phone,language)
       <span>Enter number of records (note Bloomreach batch endpoint 50 command limit): </span>
       <input 
         type="number" 
