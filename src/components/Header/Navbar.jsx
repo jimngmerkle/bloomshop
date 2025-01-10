@@ -44,7 +44,7 @@ const Navbar = () => {
                   Preferences
                 </Link>
               </li>
-            )}      
+            )}       
             <li>
               <Link
                 aria-label="Misc"
