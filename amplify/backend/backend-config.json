@@ -41,6 +41,14 @@
           ],
           "category": "function",
           "resourceName": "createCatalogFn"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "batchFn"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -50,6 +58,12 @@
   "function": {
     "addCustomersFn": {
       "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "batchFn": {
+      "build": true,
+      "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -93,6 +107,22 @@
         {
           "category": "function",
           "resourceName": "addCustomersFn"
+        }
+      ]
+    },
+    "AMPLIFY_function_batchFn_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "batchFn"
+        }
+      ]
+    },
+    "AMPLIFY_function_batchFn_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "batchFn"
         }
       ]
     },

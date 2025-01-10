@@ -35,6 +35,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/batch": {
+      "name": "/batch",
+      "lambdaFunction": "batchFn",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

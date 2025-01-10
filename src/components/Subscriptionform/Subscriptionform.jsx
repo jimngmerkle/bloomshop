@@ -103,9 +103,9 @@ const Subscriptionform = () => {
         }))
       };
 
-      console.log('Submitting consent updates to /update-consent with payload:', payload);
+      console.log('Submitting consent updates to /batch with payload:', payload);
 
-      const response = await fetch(`${apiUrl}/update-consent`, {
+      const response = await fetch(`${apiUrl}/batch`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +114,7 @@ const Subscriptionform = () => {
       });
 
       const data = await response.json();
-      console.log('Response from /update-consent:', data);
+      console.log('Response from /batch:', data);
 
       if (data.success) {
         setIsSubmitted(true);

@@ -18,24 +18,27 @@ const Miscform = () => {
     }
   };  
 
-  const transformCustomers = (customers) => ({
-    commands: customers.map(customer => ({
-      name: "customers",
-      data: {
-        customer_ids: {
-          registered: customer.registered
-        },
-        properties: {
-          first_name: customer.first_name,
-          last_name: customer.last_name,
-          email: customer.email,
-          gender: customer.gender,
-          phone: customer.phone,
-          language: customer.language
+  const transformCustomers = (customers) => {
+    const customerArray = Array.isArray(customers) ? customers : [customers];
+    return {
+      commands: customerArray.map(customer => ({
+        name: "customers",
+        data: {
+          customer_ids: {
+            registered: customer.registered
+          },
+          properties: {
+            first_name: customer.first_name,
+            last_name: customer.last_name,
+            email: customer.email,
+            gender: customer.gender,
+            phone: customer.phone,
+            language: customer.language
+          }
         }
-      }
-    }))
-  });
+      }))
+    };
+  };
 
   const addCustomers = async () => {
     try {
@@ -51,8 +54,8 @@ const Miscform = () => {
         const transformedData = transformCustomers(data);
         console.log('transformed customer data:', transformedData);
 
-        // Step 3: Send the transformed data to the specified endpoint
-        const bloomreachResponse = await fetch(`${apiUrl}/add-customers`, {
+        // Step 3: Send the transformed data to batch endpoint
+        const bloomreachResponse = await fetch(`${apiUrl}/batch`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -101,7 +104,7 @@ const Miscform = () => {
       <button className="btn-primary" onClick={openTypeform}>Open Typeform</button>
       <br />
       <b>Add test customer data to Bloomreach from Mockaroo</b>
-      <span>Enter number of records: </span>
+      <span>Enter number of records (note Bloomreach batch endpoint 50 command limit): </span>
       <input 
         type="number" 
         placeholder="Number of records" 
