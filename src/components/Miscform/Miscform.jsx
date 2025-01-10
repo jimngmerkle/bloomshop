@@ -9,6 +9,7 @@ const Miscform = () => {
   const [catalogRecordLimit, setCatalogRecordLimit] = useState(10);     
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);  
+  const [method, setMethod] = useState('');
   const [catalogName, setCatalogName] = useState(''); 
   const [catalogId, setCatalogId] = useState(null);   
   const [typeformUrl, setTypeformUrl] = useState('https://e0u55g5197k.typeform.com/to/MzfVzC9W'); 
@@ -21,6 +22,18 @@ const Miscform = () => {
       toast.error("Please enter a valid Typeform URL.");
     }
   };  
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    try {
+      eval(method.trim());
+      console.log(method.trim());
+      toast.success('Method submitted!');
+    } catch (error) {
+      console.error('Error executing method:', error);
+      toast.error('Error executing method');
+    }
+  };
 
   const fetchProducts = async () => {
     try {
@@ -185,15 +198,13 @@ const Miscform = () => {
       toast.error('Error.');
     }
 
-
-
   }
     
 
   return (
     <div className="content">
       <p>Current user: <strong>{email}</strong></p>
-      <br />
+      <hr className="separator" />
       <b>Omniconnect</b>
       <p>Test Bloomreach Omniconnect functionality using a Typeform integration and <b><a href="https://api-demoapp.exponea.com/intg/webhook-handler/v1.0/650ce29b-b5f2-4f57-9e74-5abeaeaec120/callback" target="_new">test Omniconnect URL</a> </b></p>
       (note Typeform's 10 responses per month limit for free accounts)
@@ -208,7 +219,7 @@ const Miscform = () => {
         onChange={(e) => setTypeformUrl(e.target.value)} 
       />
       <button className="btn-primary" onClick={openTypeform}>Open Typeform</button>
-      <br />
+      <hr className="separator" />
       <span><b>Add test customer data to Bloomreach from a test Mockaroo schema</b> (first_name,last_name,registered,email,gender,phone,language)</span>
       <br />
       <span>Enter number of records (note Bloomreach batch endpoint 50 command limit): </span>
@@ -220,10 +231,9 @@ const Miscform = () => {
         onChange={(e) => setCustomerRecordLimit(e.target.value)} 
       />
       <button className="btn-primary" onClick={addCustomers}>Add customers to Bloomreach</button>
-   
-      <br /> 
+      <hr className="separator" />
       <p><b>Add a new catalog in Bloomreach </b><br />
-      with fakestoreapi data (see <a href="https://fakestoreapi.com/docs" target="_new">https://fakestoreapi.com/docs</a>)</p>
+      with fakestoreapi data (see <a href="https://fakestoreapi.com/docs" target="_new">documentation</a>)</p>
       <br />
       <span>Enter a catalog name: </span>
       <textarea 
@@ -245,7 +255,25 @@ const Miscform = () => {
       <br />
       <button className="btn-primary" onClick={fetchProducts}>Generate catalog in Bloomreach</button>
       <br />      
-      <br />    
+      <hr className="separator" />
+      <p><b>Send SDK method</b><br />
+      (see <a href ='https://documentation.bloomreach.com/engagement/docs/tracking' target="_new">documentation</a>)</p>
+      <br />
+          <form onSubmit={handleSubmit} id="form">
+            <label htmlFor="method">Enter SDK method:</label>
+            <br />
+            <textarea
+              id="method"
+              name="method"
+              value={method}
+              onChange={(e) => setMethod(e.target.value)}
+              className="event-textarea"
+              placeholder="Enter SDK method"
+              required
+            />
+            <button className="btn-primary" type="submit">Submit</button>
+          </form>
+      <br />
     </div>
   );
 };

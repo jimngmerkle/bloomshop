@@ -9,7 +9,6 @@ import Singleproductpage from "../pages/product-details/Singleproductpage";
 import ErrorNotFound from "../components/ErrorNotFoundPage/ErrorNotFound";
 import ScrollToTop from "../components/ScrollToTop";
 import Subscriptionpage from "../pages/subscriptionpage/Subscriptionpage"; 
-import Methodspage from "../pages/methodspage/Methodspage";
 import Miscformpage from "../pages/miscpage/Miscformpage";
 
 const AllRoutes = ({
@@ -52,7 +51,6 @@ const AllRoutes = ({
           />
           <Route path="/login" element={<Loginpage cartItems={cartItems} />} />
           <Route path="/subscriptionpage" element={<Subscriptionpage cartItems={cartItems} />} />
-          <Route path="/methodspage" element={<Methodspage cartItems={cartItems} />} />
           <Route path="/miscformpage" element={<Miscformpage cartItems={cartItems} />} />
           <Route
             path="/registration"

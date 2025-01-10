@@ -61,7 +61,13 @@
   }
   
   /* Product Related CSS */
-
+  .separator {
+    border: 0;
+    height: 1px;
+    background: #777777;
+    margin: 20px 1px;
+    width: 80%;
+  }
   .content {
     margin-left: 20px;
     display: flex;

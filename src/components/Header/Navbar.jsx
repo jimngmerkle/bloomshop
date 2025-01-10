@@ -44,16 +44,7 @@ const Navbar = () => {
                   Preferences
                 </Link>
               </li>
-            )}
-            <li>
-              <Link
-                aria-label="SDK Methods"
-                className="link-hover"
-                to="/methodspage"
-              >
-                SDK Methods
-              </Link>
-            </li>             
+            )}      
             <li>
               <Link
                 aria-label="Misc"
