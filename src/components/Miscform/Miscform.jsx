@@ -233,7 +233,7 @@ const Miscform = () => {
       <button className="btn-primary" onClick={addCustomers}>Add customers to Bloomreach</button>
       <hr className="separator" />
       <p><b>Add a new catalog in Bloomreach </b><br />
-      with fakestoreapi data (see <a href="https://fakestoreapi.com/docs" target="_new">documentation</a>)</p>
+      with fakestoreapi data (title,description,price,category,image) (see <a href="https://fakestoreapi.com/docs" target="_new">documentation</a>)</p>
       <br />
       <span>Enter a catalog name: </span>
       <textarea 
