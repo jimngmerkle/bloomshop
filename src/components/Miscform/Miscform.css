@@ -103,7 +103,7 @@
   }
   
   .btn-primary {
-    background-color: #007bff;
+    background-color: #0f3460;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -111,7 +111,7 @@
   }
   
   .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #0f3460;
   }
   
   .product {
