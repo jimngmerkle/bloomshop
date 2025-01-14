@@ -10,7 +10,6 @@ const Miscform = () => {
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);  
   const [method, setMethod] = useState('');
-  const [weblayerId, setWeblayerId] = useState(`exponea.showWebLayer('67865c6fd9fb6b37a889aa37');`);
   const [catalogName, setCatalogName] = useState(''); 
   const [catalogId, setCatalogId] = useState(null);   
   const [typeformUrl, setTypeformUrl] = useState('https://e0u55g5197k.typeform.com/to/MzfVzC9W'); 
@@ -31,12 +30,8 @@ const Miscform = () => {
         eval(method.trim());
         console.log(method.trim());
         toast.success('SDK method submitted!');
-      } else if (weblayerId.trim()) {
-        eval(weblayerId.trim());
-        console.log(weblayerId.trim());
-        toast.success('Weblayer ID submitted!');
       } else {
-        toast.error('Please enter a valid SDK method or weblayer ID.');
+        toast.error('Please enter a valid SDK method.');
       }
     } catch (error) {
       console.error('Error executing method:', error);
