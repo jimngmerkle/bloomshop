@@ -56,16 +56,17 @@
 
 .submit-btn {
   height: 50px;
+  color: white;
   width: 150px;
   margin-top: 40px;
-  background-color: lightblue;
+  background-color: #0f3460;
   border-radius: 10px;
   font-weight: 500;
 }
 
 .submit-btn:hover {
   cursor: pointer;
-  background-color: grey;
+  background-color: #0f3460;
 }
 
 .forgot-pass {
