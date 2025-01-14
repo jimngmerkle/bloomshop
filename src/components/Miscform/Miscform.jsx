@@ -10,6 +10,7 @@ const Miscform = () => {
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);  
   const [method, setMethod] = useState('');
+  const [weblayerId, setWeblayerId] = useState(`exponea.showWebLayer('67865c6fd9fb6b37a889aa37');`);
   const [catalogName, setCatalogName] = useState(''); 
   const [catalogId, setCatalogId] = useState(null);   
   const [typeformUrl, setTypeformUrl] = useState('https://e0u55g5197k.typeform.com/to/MzfVzC9W'); 
@@ -274,6 +275,20 @@ const Miscform = () => {
             <button className="btn-primary" type="submit">Submit</button>
           </form>
       <br />
+      <hr className="separator" />
+      <p><b>Show weblayer</b><br /></p>
+      <br />
+      <span>Enter a campaign weblayer id: </span>
+      <textarea 
+        type="text" 
+        placeholder="weblayer id" 
+        value={weblayerId} 
+        className="text-box"
+        onChange={(e) => setMethod(e.target.value)} 
+      />
+      <button className="btn-primary" onClick={handleSubmit}>Show weblayer</button>
+      <br />
+      <br />      
     </div>
   );
 };
