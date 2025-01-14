@@ -265,38 +265,64 @@ const Miscform = () => {
       <button className="btn-primary" onClick={fetchProducts}>Generate catalog in Bloomreach</button>
       <br />      
       <hr className="separator" />
-      <p><b>Send SDK method</b><br />
-      (see <a href ='https://documentation.bloomreach.com/engagement/docs/tracking' target="_new">documentation</a>)</p>
+      <div className="two-column-layout">
+       <div className="left-column">
+    <p><b>Send SDK method</b><br /> 
+      (see <a href='https://documentation.bloomreach.com/engagement/docs/tracking' target="_new">documentation</a>)
+    </p>
+    <br />
+    <form onSubmit={handleSubmit} id="form">
+      <label htmlFor="method">Enter SDK method:</label>
       <br />
-          <form onSubmit={handleSubmit} id="form">
-            <label htmlFor="method">Enter SDK method:</label>
-            <br />
-            <textarea
-              id="method"
-              name="method"
-              value={method}
-              onChange={(e) => setMethod(e.target.value)}
-              className="event-textarea"
-              placeholder="Enter SDK method"
-              required
-            />
-            <button className="btn-primary" type="submit">Submit</button>
-          </form>
-      <br />
-      <hr className="separator" />
-      <p><b>Show weblayer</b><br /></p>
-      <br />
-      <span>Enter a campaign weblayer id: </span>
       <textarea 
-        type="text" 
-        placeholder="weblayer id" 
-        value={weblayerId} 
-        className="text-box"
+        id="method" 
+        name="method" 
+        value={method} 
         onChange={(e) => setMethod(e.target.value)} 
+        className="event-textarea" 
+        placeholder="Enter SDK method" 
+        required 
       />
-      <button className="btn-primary" onClick={handleSubmit}>Show weblayer</button>
-      <br />
-      <br />      
+      <button className="btn-primary" type="submit">Submit</button>
+    </form>
+    <br />
+  </div>
+  <div className="right-column">
+    <p>Some examples</p>
+    <br />
+    <pre>
+    exponea.identify('john.smith@example.com');
+    </pre>
+    <br />
+    <pre>
+    exponea.update(&#123;
+    email: 'gordon.freeman@blackmesa.com',
+    first_name: 'Gordon',
+    last_name: 'Freeman',
+    company: 'Blackmesa'&#125;);
+    </pre>
+    <br />
+    <pre>
+    exponea.track('purchase', &#123;<br />
+    purchase_status: 'success',<br />
+    product_list: [<br />
+    product_id: "abc123", quantity: 2&#125;,<br />
+    product_id: "abc456", quantity: 1&#125;<br />
+    ],<br />
+    total_price: 7.99,<br />
+    payment_type: 'credit_card'<br />
+    &#125;);
+    </pre>
+    <br />
+    <pre>
+    exponea.anonymize();
+    </pre>
+    <br />
+    <pre>
+    exponea.showWebLayer('67865c6fd9fb6b37a889aa37');
+    </pre>
+  </div>
+</div>   
     </div>
   );
 };
