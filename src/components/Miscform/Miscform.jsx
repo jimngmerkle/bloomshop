@@ -27,9 +27,17 @@ const Miscform = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     try {
-      eval(method.trim());
-      console.log(method.trim());
-      toast.success('Method submitted!');
+      if (method.trim()) {
+        eval(method.trim());
+        console.log(method.trim());
+        toast.success('SDK method submitted!');
+      } else if (weblayerId.trim()) {
+        eval(weblayerId.trim());
+        console.log(weblayerId.trim());
+        toast.success('Weblayer ID submitted!');
+      } else {
+        toast.error('Please enter a valid SDK method or weblayer ID.');
+      }
     } catch (error) {
       console.error('Error executing method:', error);
       toast.error('Error executing method');
