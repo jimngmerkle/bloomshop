@@ -86,10 +86,12 @@
     flex: 1;
     padding: 20px;
     max-width: 50%;
+    box-sizing: border-box;
   }
   
   .left-column {
     border-right: 1px solid #ccc;
+    flex-shrink: 0; /* Prevent the left column from shrinking */
   }
   
   .right-column pre {
@@ -243,7 +245,7 @@
   #form {
     display: flex;
     flex-direction: column;
-    width: 400px; 
+    width: 90%; 
   }
   
   .event-textarea {

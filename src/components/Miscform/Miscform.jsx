@@ -278,9 +278,8 @@ const Miscform = () => {
         placeholder="Enter SDK method" 
         required 
       />
-      <button className="btn-primary" type="submit">Submit</button>
     </form>
-    <br />
+    <br /><button className="btn-primary" type="submit">Submit</button>
   </div>
   <div className="right-column">
     <p>Some examples</p>
@@ -318,7 +317,15 @@ const Miscform = () => {
     </pre>
   </div>
 </div>   
+<hr className="separator" />
+      <span><b>Test web browser push subscription weblayer</b></span>
+      <br />
+      <button className="btn-primary" onClick={() => window.location.href = 'https://main.da7anuwx8hniw.amplifyapp.com/miscformpage/#test-notification'}>
+  Test subscription weblayer
+</button>
+      <br />
     </div>
+    
   );
 };
 
