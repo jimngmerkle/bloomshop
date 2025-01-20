@@ -329,7 +329,7 @@ const Miscform = () => {
       <span><b>Test web browser push subscription weblayer</b></span>
       <br />
       <button className="btn-primary" onClick={() => {
-  window.location.hash = 'https://main.da7anuwx8hniw.amplifyapp.com/miscformpage/#test-notification';
+  window.location.hash = '#test-notification';
   window.location.reload();
 }}>
   Test subscription weblayer
