@@ -292,7 +292,6 @@ const Miscform = () => {
     exponea.update(&#123;
     email: 'gordon.freeman@blackmesa.com',
     first_name: 'Gordon',
-    last_name: 'Freeman',
     company: 'Blackmesa'&#125;);
     </pre>
     <br />
@@ -303,8 +302,17 @@ const Miscform = () => {
     product_id: "abc123", quantity: 2&#125;,<br />
     product_id: "abc456", quantity: 1&#125;<br />
     ],<br />
-    total_price: 7.99,<br />
-    payment_type: 'credit_card'<br />
+    total_price: 7.99<br />
+    &#125;);
+    </pre>
+    <br />
+    <pre>
+    exponea.track('consent', &#123;
+    customer_ids: &#123; registered: "jim.ng@merkle.com" &#125;,
+    event_type: "consent",
+    category: "email",
+    action: "reject",
+    valid_until: "unlimited"
     &#125;);
     </pre>
     <br />
