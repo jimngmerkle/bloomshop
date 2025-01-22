@@ -1,203 +1,274 @@
 package com.exponea.sdk.view
 
-import android.content.ComponentName
+import android.app.Dialog
 import android.content.Context
-import android.content.res.Resources
-import android.net.Uri
-import android.os.Build
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.AttributeSet
+import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.RelativeLayout
-import androidx.annotation.RequiresApi
-import androidx.browser.customtabs.CustomTabsCallback
-import androidx.browser.customtabs.CustomTabsClient
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.browser.customtabs.CustomTabsServiceConnection
-import androidx.browser.customtabs.CustomTabsSession
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
+import android.view.WindowManager
+import android.widget.Button
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import com.exponea.sdk.R
-import com.exponea.sdk.databinding.InappContentBlockCarouselBinding
-import com.exponea.sdk.models.ContentBlockCarouselCallback
-import com.exponea.sdk.models.ContentBlockSelector
-import com.exponea.sdk.services.inappcontentblock.ContentBlockCarouselViewController
-import com.exponea.sdk.services.inappcontentblock.ContentBlockCarouselViewController.Companion.DEFAULT_MAX_MESSAGES_COUNT
-import com.exponea.sdk.services.inappcontentblock.ContentBlockCarouselViewController.Companion.DEFAULT_SCROLL_DELAY
-import com.exponea.sdk.services.inappcontentblock.ContentBlockCarouselViewController.Companion.EMPTY_PLACEHOLDER_ID
-import com.exponea.sdk.services.inappcontentblock.ContentBlockCarouselViewHolder
-import com.exponea.sdk.util.Logger
+import com.exponea.sdk.models.InAppMessageButtonType
+import com.exponea.sdk.models.InAppMessagePayload
+import com.exponea.sdk.models.InAppMessagePayload.Companion.parseColor
+import com.exponea.sdk.models.InAppMessagePayload.Companion.parseFontSize
+import com.exponea.sdk.models.InAppMessagePayloadButton
+import com.exponea.sdk.models.TextPosition
+import com.exponea.sdk.repository.DrawableCache
+import com.exponea.sdk.util.setBackgroundColor
+import kotlinx.android.synthetic.main.in_app_message_dialog.buttonAction1
+import kotlinx.android.synthetic.main.in_app_message_dialog.buttonAction2
+import kotlinx.android.synthetic.main.in_app_message_dialog.buttonClose
+import kotlinx.android.synthetic.main.in_app_message_dialog.buttonSpace
+import kotlinx.android.synthetic.main.in_app_message_dialog.imageViewImage
+import kotlinx.android.synthetic.main.in_app_message_dialog.inAppMessageDialogContainer
+import kotlinx.android.synthetic.main.in_app_message_dialog.inAppMessageDialogRoot
+import kotlinx.android.synthetic.main.in_app_message_dialog.linearLayoutBackground
+import kotlinx.android.synthetic.main.in_app_message_dialog.textViewBody
+import kotlinx.android.synthetic.main.in_app_message_dialog.textViewTitle
 
-class ContentBlockCarouselView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : RelativeLayout(context, attrs, defStyleAttr) {
+internal class InAppMessageDialog : InAppMessageView, Dialog {
+    private val fullScreen: Boolean
+    private val payload: InAppMessagePayload
+    private val onButtonClick: (InAppMessagePayloadButton) -> Unit
+    private var onDismiss: ((Boolean, InAppMessagePayloadButton?) -> Unit)?
+    private var onError: (String) -> Unit
+    private val imageCache: DrawableCache
 
-    private val binding: InappContentBlockCarouselBinding =
-        InappContentBlockCarouselBinding.inflate(View.inflate(context, R.layout.inapp_content_block_carousel, this))
+    override val isPresented: Boolean
+        get() = isShowing
 
-    public var behaviourCallback: ContentBlockCarouselCallback?
-        get() = viewController.behaviourCallback
-        set(value) {
-            viewController.behaviourCallback = value
-        }
-
-    public var contentBlockSelector: ContentBlockSelector
-        get() = viewController.contentBlockSelector
-        set(value) {
-            viewController.contentBlockSelector = value
-        }
-
-    private lateinit var viewPager: ViewPager2
-    internal lateinit var viewController: ContentBlockCarouselViewController
-
-    private var tabsClient: CustomTabsClient? = null
-    private var tabsSession: CustomTabsSession? = null
-    private val tabsCallback = object : CustomTabsCallback() {
-        override fun onNavigationEvent(navigationEvent: Int, extras: Bundle?) {
-            when (navigationEvent) {
-                NAVIGATION_FAILED,
-                TAB_HIDDEN -> {
-                    Logger.i(this, "InAppCbCarousel: User returns to app")
-                    viewController.onViewBecomeForeground()
-                }
-                else -> {
-                    Logger.v(this, "InAppCbCarousel: Web Navigation event: $navigationEvent")
-                }
-            }
-        }
-    }
-    private val tabsConnection = object : CustomTabsServiceConnection() {
-        override fun onServiceDisconnected(name: ComponentName?) {
-            tabsClient = null
-            tabsSession = null
-        }
-
-        override fun onCustomTabsServiceConnected(name: ComponentName, client: CustomTabsClient) {
-            tabsClient = client
-            tabsClient?.warmup(0)
-            tabsSession = tabsClient?.newSession(tabsCallback)
-        }
+    constructor(
+        context: Context,
+        fullScreen: Boolean,
+        payload: InAppMessagePayload,
+        image: DrawableCache,
+        onButtonClick: (InAppMessagePayloadButton) -> Unit,
+        onDismiss: (Boolean, InAppMessagePayloadButton?) -> Unit,
+        onError: (String) -> Unit
+    ) : super(context) {
+        this.fullScreen = fullScreen
+        this.payload = payload
+        this.imageCache = image
+        this.onButtonClick = onButtonClick
+        this.onDismiss = onDismiss
+        this.onError = onError
+        val inflater = LayoutInflater.from(context)
+        setContentView(inflater.inflate(R.layout.in_app_message_dialog, null, false))
     }
 
-    init {
-        val placeholderId = readPlaceholderId(context, attrs, defStyleAttr, 0)
-        val maxMessagesCount = readMaxMessagesCount(context, attrs, defStyleAttr, 0)
-        val scrollDelay = readScrollDelay(context, attrs, defStyleAttr, 0)
-        Logger.i(this, "InAppCbCarousel: Initializing Carousel for content block placeholder ID: $placeholderId")
-        if (placeholderId == EMPTY_PLACEHOLDER_ID) {
-            Logger.e(this, "InAppCbCarousel: Placeholder ID is required")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setupPositions()
+        setupFullscreen()
+        setupImage()
+        setupCloseButton()
+        setupTitleText()
+        setupBodyText()
+        setupButtons()
+        setupWindow()
+
+        setOnDismissListener {
+            this.onDismiss?.invoke(false, null)
         }
-        this.viewController = ContentBlockCarouselViewController(
-            this,
-            placeholderId,
-            maxMessagesCount,
-            scrollDelay
-        )
-        this.viewPager = binding.contentBlockCarouselPager
-        this.viewPager.adapter = viewController.contentBlockCarouselAdapter
-        this.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrollStateChanged(state: Int) {
-                super.onPageScrollStateChanged(state)
-                viewController.onPageScrollStateChanged(
-                    state,
-                    viewPager.currentItem
-                )
-            }
-        })
-        CustomTabsClient.bindCustomTabsService(
-            context, CustomTabsClient.getPackageName(context, null), tabsConnection
-        )
     }
 
-    private fun readPlaceholderId(context: Context, attrs: AttributeSet?, defStyleAttr: Int, sRes: Int): String {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ContentBlockCarouselView, defStyleAttr, sRes)
-        val placeholderId = typedArray.getString(R.styleable.ContentBlockCarouselView_placeholderId)
-        typedArray.recycle()
-        return placeholderId ?: EMPTY_PLACEHOLDER_ID
-    }
-
-    private fun readMaxMessagesCount(context: Context, attrs: AttributeSet?, defStyleAttr: Int, sRes: Int): Int {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ContentBlockCarouselView, defStyleAttr, sRes)
-        val maxMessagesCount = typedArray.getInt(
-            R.styleable.ContentBlockCarouselView_maxMessagesCount,
-            DEFAULT_MAX_MESSAGES_COUNT
-        )
-        typedArray.recycle()
-        return maxMessagesCount
-    }
-
-    private fun readScrollDelay(context: Context, attrs: AttributeSet?, defStyleAttr: Int, sRes: Int): Int {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ContentBlockCarouselView, defStyleAttr, sRes)
-        val scrollDelay = typedArray.getInt(R.styleable.ContentBlockCarouselView_scrollDelay, DEFAULT_SCROLL_DELAY)
-        typedArray.recycle()
-        return scrollDelay
-    }
-
-    internal fun recalculateHeightIfNeeded(onlyCurrentView: Boolean) {
-        if (onlyCurrentView) {
-            Logger.v(this, "InAppCbCarousel: Recalculating height for current view")
+    private fun setupFullscreen() {
+        // setup padding
+        val padding = if (fullScreen) {
+            context.resources.getDimensionPixelSize(R.dimen.exponea_sdk_in_app_message_fullscreen_padding)
         } else {
-            Logger.v(this, "InAppCbCarousel: Recalculating height for current view and views around it")
+            context.resources.getDimensionPixelSize(R.dimen.exponea_sdk_in_app_message_dialog_padding)
         }
-        if (layoutParams == null || layoutParams.height != ViewGroup.LayoutParams.WRAP_CONTENT) {
-            Logger.v(this, "InAppCbCarousel: Auto-height is not set, skipping")
+        inAppMessageDialogContainer.setPadding(padding, padding, padding, padding)
+
+        val rootParams = inAppMessageDialogRoot.layoutParams as ConstraintLayout.LayoutParams
+        val imageParams = imageViewImage.layoutParams as ConstraintLayout.LayoutParams
+        if (fullScreen) {
+            // remove constraint on dialog max. width
+            rootParams.matchConstraintMaxWidth = -1
+
+            // let image height take up whole screen
+            rootParams.height = ConstraintLayout.LayoutParams.MATCH_PARENT
+            imageParams.height = 0
+        } else {
+            imageParams.constrainedHeight = true
+        }
+    }
+
+    private fun setupPositions() {
+        var constraintSet = ConstraintSet()
+        constraintSet.clone(inAppMessageDialogRoot)
+        constraintSet.removeFromVerticalChain(linearLayoutBackground.id)
+        constraintSet.removeFromVerticalChain(imageViewImage.id)
+
+        if (payload.isTextOverImage == true) { // image is from top to bottom, text is either top or bottom
+            constraintSet.connect(
+                imageViewImage.id,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP,
+                0
+            )
+            constraintSet.connect(
+                imageViewImage.id,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM,
+                0
+            )
+            constraintSet.connect(
+                linearLayoutBackground.id,
+                if (payload.textPosition == TextPosition.TOP) ConstraintSet.TOP else ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                if (payload.textPosition == TextPosition.TOP) ConstraintSet.TOP else ConstraintSet.BOTTOM,
+                0
+            )
+        } else {
+            // which element is at top
+            constraintSet.connect(
+                if (payload.textPosition == TextPosition.BOTTOM) imageViewImage.id else linearLayoutBackground.id,
+                ConstraintSet.TOP,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.TOP,
+                0
+            )
+            // 2-way connection between bottom and top of elements
+            constraintSet.connect(
+                imageViewImage.id,
+                if (payload.textPosition == TextPosition.TOP) ConstraintSet.TOP else ConstraintSet.BOTTOM,
+                linearLayoutBackground.id,
+                if (payload.textPosition == TextPosition.TOP) ConstraintSet.BOTTOM else ConstraintSet.TOP,
+                0
+            )
+            constraintSet.connect(
+                linearLayoutBackground.id,
+                if (payload.textPosition == TextPosition.TOP) ConstraintSet.BOTTOM else ConstraintSet.TOP,
+                imageViewImage.id,
+                if (payload.textPosition == TextPosition.TOP) ConstraintSet.TOP else ConstraintSet.BOTTOM,
+                0
+            )
+            // which element is at bottom
+            constraintSet.connect(
+                if (payload.textPosition == TextPosition.BOTTOM) linearLayoutBackground.id else imageViewImage.id,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM,
+                0
+            )
+        }
+        constraintSet.applyTo(inAppMessageDialogRoot)
+    }
+
+    private fun setupImage() {
+        imageViewImage.isOnTop = payload.textPosition == TextPosition.BOTTOM
+        imageViewImage.textOverImage = payload.isTextOverImage == true
+        imageCache.showImage(
+            payload.imageUrl,
+            imageViewImage,
+            onImageNotLoaded = {
+                onError("Image '${payload.imageUrl}' not loaded successfully")
+                onDismiss = null // clear the dismiss listener, we called the button listener
+                dismiss()
+            }
+        )
+    }
+
+    private fun setupTitleText() {
+        if (payload.title.isNullOrEmpty()) {
+            textViewTitle.visibility = View.GONE
             return
         }
-        val viewHolderScope = collectActivePlaceholderViews(onlyCurrentView)
-        val planned = post {
-            val highestValue = viewHolderScope.map {
-                it.measure(
-                    MeasureSpec.makeMeasureSpec(it.width, MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
-                )
-                Logger.v(
-                    this,
-                    "InAppCbCarousel: Auto-height feature detects height: ${it.measuredHeight}"
-                )
-                it.measuredHeight
-            }.maxOrNull()
-            Logger.v(this, "InAppCbCarousel: Max height of content block is: $highestValue")
-            highestValue?.let {
-                if (viewPager.layoutParams.height != it) {
-                    viewPager.layoutParams = viewPager.layoutParams.apply {
-                        height = it
-                    }
-                }
-            }
+        textViewTitle.text = payload.title
+        textViewTitle.setTextColor(parseColor(payload.titleTextColor, Color.BLACK))
+        textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, parseFontSize(payload.titleTextSize, 22f))
+    }
+
+    private fun setupBodyText() {
+        if (payload.bodyText.isNullOrEmpty()) {
+            textViewBody.visibility = View.GONE
+            return
         }
-        if (!planned) {
-            Logger.w(this, "InAppCbCarousel: Auto-height feature disabled, view is exiting")
+        textViewBody.text = payload.bodyText
+        textViewBody.setTextColor(parseColor(payload.bodyTextColor, Color.BLACK))
+        textViewBody.setTextSize(TypedValue.COMPLEX_UNIT_DIP, parseFontSize(payload.bodyTextSize, 14f))
+    }
+
+    private fun setupCloseButton() {
+        buttonClose.setOnClickListener {
+            dismissMessageWithClosingInteraction(null)
+        }
+        buttonClose.setTextColor(parseColor(payload.closeButtonColor, Color.WHITE))
+    }
+
+    private fun dismissMessageWithClosingInteraction(buttonPayload: InAppMessagePayloadButton?) {
+        onDismiss?.invoke(true, buttonPayload)
+        // clear the dismiss listener, we called the manual listener
+        onDismiss = null
+        dismiss()
+    }
+
+    private fun setupButtons() {
+        val buttonsCount = if (payload.buttons != null) payload.buttons.count() else 0
+        val button1Payload = if (payload.buttons != null && payload.buttons.isNotEmpty()) payload.buttons[0] else null
+        val button2Payload = if (payload.buttons != null && payload.buttons.count() > 1) payload.buttons[1] else null
+        setupButton(buttonAction1, button1Payload, buttonsCount)
+        setupButton(buttonAction2, button2Payload, buttonsCount)
+    }
+
+    private fun setupButton(buttonAction: Button, buttonPayload: InAppMessagePayloadButton?, buttonsCount: Int) {
+        if (buttonPayload == null) {
+            buttonSpace.visibility = View.GONE
+            buttonAction.visibility = View.GONE
+            return
+        }
+        if (buttonsCount == 2) {
+            buttonAction.maxWidth = context.resources
+                    .getDimensionPixelSize(R.dimen.exponea_sdk_in_app_message_max_buttons_width)
+        }
+        if (buttonsCount == 1) {
+            buttonAction.maxWidth = context.resources
+                    .getDimensionPixelSize(R.dimen.exponea_sdk_in_app_message_max_button_width)
+        }
+        buttonAction.text = buttonPayload.buttonText
+        buttonAction.setTextColor(parseColor(buttonPayload.buttonTextColor, Color.BLACK))
+        buttonAction.setBackgroundColor(
+            R.drawable.in_app_message_dialog_button,
+            parseColor(buttonPayload.buttonBackgroundColor, Color.LTGRAY)
+        )
+        if (buttonPayload.buttonType == InAppMessageButtonType.CANCEL) {
+            buttonAction.setOnClickListener {
+                dismissMessageWithClosingInteraction(buttonPayload)
+            }
+        } else {
+            buttonAction.setOnClickListener {
+                onButtonClick(buttonPayload)
+                onDismiss = null // clear the dismiss listener, we called the button listener
+                dismiss()
+            }
         }
     }
 
-    private fun collectActivePlaceholderViews(onlyCurrentView: Boolean): List<InAppContentBlockPlaceholderView> {
-        val result = mutableListOf<InAppContentBlockPlaceholderView>()
-        val innerRecyclerView = viewPager.getChildAt(0)
-        if (innerRecyclerView !is RecyclerView) {
-            Logger.w(this, "InAppCbCarousel: Auto-height feature disabled, inner view is not a RecyclerView")
-            return result
+    private fun setupWindow() {
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        if (payload.isTextOverImage == true) {
+            linearLayoutBackground.setBackgroundColor(Color.TRANSPARENT)
+        } else {
+            val backgroundDrawable = if (payload.textPosition == TextPosition.BOTTOM)
+                R.drawable.in_app_message_dialog_background_bottom
+                else R.drawable.in_app_message_dialog_background_top
+            linearLayoutBackground.setBackgroundColor(
+                backgroundDrawable,
+                parseColor(payload.backgroundColor, Color.WHITE)
+            )
         }
-        if (!onlyCurrentView) {
-            (innerRecyclerView.findViewHolderForLayoutPosition(viewPager.currentItem - 1)
-                    as? ContentBlockCarouselViewHolder)?.getContentBlockPlaceholderView()?.let {
-                result.add(it)
-            }
-        }
-        (innerRecyclerView.findViewHolderForLayoutPosition(viewPager.currentItem)
-                as? ContentBlockCarouselViewHolder)?.getContentBlockPlaceholderView()?.let {
-            result.add(it)
-        }
-        if (!onlyCurrentView) {
-            (innerRecyclerView.findViewHolderForLayoutPosition(viewPager.currentItem + 1)
-                    as? ContentBlockCarouselViewHolder)?.getContentBlockPlaceholderView()?.let {
-                result.add(it)
-            }
-        }
-        return result
-    }
 
-    // Other methods (reload, getShownContentBlock, etc.) remain as in the original code.
+        window?.attributes?.width = WindowManager.LayoutParams.MATCH_PARENT
+        window?.attributes?.height = WindowManager.LayoutParams.MATCH_PARENT
+        window?.setDimAmount(0.5f)
+    }
 }
