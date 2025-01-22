@@ -136,5 +136,68 @@ class ContentBlockCarouselView @JvmOverloads constructor(
         return scrollDelay
     }
 
-    // Remaining methods untouched
+    internal fun recalculateHeightIfNeeded(onlyCurrentView: Boolean) {
+        if (onlyCurrentView) {
+            Logger.v(this, "InAppCbCarousel: Recalculating height for current view")
+        } else {
+            Logger.v(this, "InAppCbCarousel: Recalculating height for current view and views around it")
+        }
+        if (layoutParams == null || layoutParams.height != ViewGroup.LayoutParams.WRAP_CONTENT) {
+            Logger.v(this, "InAppCbCarousel: Auto-height is not set, skipping")
+            return
+        }
+        val viewHolderScope = collectActivePlaceholderViews(onlyCurrentView)
+        val planned = post {
+            val highestValue = viewHolderScope.map {
+                it.measure(
+                    MeasureSpec.makeMeasureSpec(it.width, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+                )
+                Logger.v(
+                    this,
+                    "InAppCbCarousel: Auto-height feature detects height: ${it.measuredHeight}"
+                )
+                it.measuredHeight
+            }.maxOrNull()
+            Logger.v(this, "InAppCbCarousel: Max height of content block is: $highestValue")
+            highestValue?.let {
+                if (viewPager.layoutParams.height != it) {
+                    viewPager.layoutParams = viewPager.layoutParams.apply {
+                        height = it
+                    }
+                }
+            }
+        }
+        if (!planned) {
+            Logger.w(this, "InAppCbCarousel: Auto-height feature disabled, view is exiting")
+        }
+    }
+
+    private fun collectActivePlaceholderViews(onlyCurrentView: Boolean): List<InAppContentBlockPlaceholderView> {
+        val result = mutableListOf<InAppContentBlockPlaceholderView>()
+        val innerRecyclerView = viewPager.getChildAt(0)
+        if (innerRecyclerView !is RecyclerView) {
+            Logger.w(this, "InAppCbCarousel: Auto-height feature disabled, inner view is not a RecyclerView")
+            return result
+        }
+        if (!onlyCurrentView) {
+            (innerRecyclerView.findViewHolderForLayoutPosition(viewPager.currentItem - 1)
+                    as? ContentBlockCarouselViewHolder)?.getContentBlockPlaceholderView()?.let {
+                result.add(it)
+            }
+        }
+        (innerRecyclerView.findViewHolderForLayoutPosition(viewPager.currentItem)
+                as? ContentBlockCarouselViewHolder)?.getContentBlockPlaceholderView()?.let {
+            result.add(it)
+        }
+        if (!onlyCurrentView) {
+            (innerRecyclerView.findViewHolderForLayoutPosition(viewPager.currentItem + 1)
+                    as? ContentBlockCarouselViewHolder)?.getContentBlockPlaceholderView()?.let {
+                result.add(it)
+            }
+        }
+        return result
+    }
+
+    // Other methods (reload, getShownContentBlock, etc.) remain as in the original code.
 }
