@@ -13,6 +13,7 @@ import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.exponea.sdk.R
+import com.exponea.sdk.databinding.InAppMessageDialogBinding
 import com.exponea.sdk.models.InAppMessageButtonType
 import com.exponea.sdk.models.InAppMessagePayload
 import com.exponea.sdk.models.InAppMessagePayload.Companion.parseColor
@@ -21,48 +22,29 @@ import com.exponea.sdk.models.InAppMessagePayloadButton
 import com.exponea.sdk.models.TextPosition
 import com.exponea.sdk.repository.DrawableCache
 import com.exponea.sdk.util.setBackgroundColor
-import kotlinx.android.synthetic.main.in_app_message_dialog.buttonAction1
-import kotlinx.android.synthetic.main.in_app_message_dialog.buttonAction2
-import kotlinx.android.synthetic.main.in_app_message_dialog.buttonClose
-import kotlinx.android.synthetic.main.in_app_message_dialog.buttonSpace
-import kotlinx.android.synthetic.main.in_app_message_dialog.imageViewImage
-import kotlinx.android.synthetic.main.in_app_message_dialog.inAppMessageDialogContainer
-import kotlinx.android.synthetic.main.in_app_message_dialog.inAppMessageDialogRoot
-import kotlinx.android.synthetic.main.in_app_message_dialog.linearLayoutBackground
-import kotlinx.android.synthetic.main.in_app_message_dialog.textViewBody
-import kotlinx.android.synthetic.main.in_app_message_dialog.textViewTitle
 
-internal class InAppMessageDialog : InAppMessageView, Dialog {
-    private val fullScreen: Boolean
-    private val payload: InAppMessagePayload
-    private val onButtonClick: (InAppMessagePayloadButton) -> Unit
-    private var onDismiss: ((Boolean, InAppMessagePayloadButton?) -> Unit)?
-    private var onError: (String) -> Unit
-    private val imageCache: DrawableCache
+internal class InAppMessageDialog(
+    context: Context,
+    private val fullScreen: Boolean,
+    private val payload: InAppMessagePayload,
+    private val imageCache: DrawableCache,
+    private val onButtonClick: (InAppMessagePayloadButton) -> Unit,
+    private var onDismiss: ((Boolean, InAppMessagePayloadButton?) -> Unit)?,
+    private val onError: (String) -> Unit
+) : InAppMessageView, Dialog(context) {
+
+    private val binding: InAppMessageDialogBinding =
+        InAppMessageDialogBinding.inflate(LayoutInflater.from(context))
 
     override val isPresented: Boolean
         get() = isShowing
 
-    constructor(
-        context: Context,
-        fullScreen: Boolean,
-        payload: InAppMessagePayload,
-        image: DrawableCache,
-        onButtonClick: (InAppMessagePayloadButton) -> Unit,
-        onDismiss: (Boolean, InAppMessagePayloadButton?) -> Unit,
-        onError: (String) -> Unit
-    ) : super(context) {
-        this.fullScreen = fullScreen
-        this.payload = payload
-        this.imageCache = image
-        this.onButtonClick = onButtonClick
-        this.onDismiss = onDismiss
-        this.onError = onError
-        val inflater = LayoutInflater.from(context)
-        setContentView(inflater.inflate(R.layout.in_app_message_dialog, null, false))
+    init {
+        setContentView(binding.root)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setupPositions()
         setupFullscreen()
         setupImage()
@@ -78,21 +60,17 @@ internal class InAppMessageDialog : InAppMessageView, Dialog {
     }
 
     private fun setupFullscreen() {
-        // setup padding
         val padding = if (fullScreen) {
             context.resources.getDimensionPixelSize(R.dimen.exponea_sdk_in_app_message_fullscreen_padding)
         } else {
             context.resources.getDimensionPixelSize(R.dimen.exponea_sdk_in_app_message_dialog_padding)
         }
-        inAppMessageDialogContainer.setPadding(padding, padding, padding, padding)
+        binding.inAppMessageDialogContainer.setPadding(padding, padding, padding, padding)
 
-        val rootParams = inAppMessageDialogRoot.layoutParams as ConstraintLayout.LayoutParams
-        val imageParams = imageViewImage.layoutParams as ConstraintLayout.LayoutParams
+        val rootParams = binding.inAppMessageDialogRoot.layoutParams as ConstraintLayout.LayoutParams
+        val imageParams = binding.imageViewImage.layoutParams as ConstraintLayout.LayoutParams
         if (fullScreen) {
-            // remove constraint on dialog max. width
             rootParams.matchConstraintMaxWidth = -1
-
-            // let image height take up whole screen
             rootParams.height = ConstraintLayout.LayoutParams.MATCH_PARENT
             imageParams.height = 0
         } else {
@@ -101,78 +79,69 @@ internal class InAppMessageDialog : InAppMessageView, Dialog {
     }
 
     private fun setupPositions() {
-        var constraintSet = ConstraintSet()
-        constraintSet.clone(inAppMessageDialogRoot)
-        constraintSet.removeFromVerticalChain(linearLayoutBackground.id)
-        constraintSet.removeFromVerticalChain(imageViewImage.id)
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(binding.inAppMessageDialogRoot)
+        constraintSet.removeFromVerticalChain(binding.linearLayoutBackground.id)
+        constraintSet.removeFromVerticalChain(binding.imageViewImage.id)
 
-        if (payload.isTextOverImage == true) { // image is from top to bottom, text is either top or bottom
+        if (payload.isTextOverImage == true) {
             constraintSet.connect(
-                imageViewImage.id,
+                binding.imageViewImage.id,
                 ConstraintSet.TOP,
                 ConstraintSet.PARENT_ID,
-                ConstraintSet.TOP,
-                0
+                ConstraintSet.TOP
             )
             constraintSet.connect(
-                imageViewImage.id,
+                binding.imageViewImage.id,
                 ConstraintSet.BOTTOM,
                 ConstraintSet.PARENT_ID,
-                ConstraintSet.BOTTOM,
-                0
+                ConstraintSet.BOTTOM
             )
             constraintSet.connect(
-                linearLayoutBackground.id,
+                binding.linearLayoutBackground.id,
                 if (payload.textPosition == TextPosition.TOP) ConstraintSet.TOP else ConstraintSet.BOTTOM,
                 ConstraintSet.PARENT_ID,
-                if (payload.textPosition == TextPosition.TOP) ConstraintSet.TOP else ConstraintSet.BOTTOM,
-                0
+                if (payload.textPosition == TextPosition.TOP) ConstraintSet.TOP else ConstraintSet.BOTTOM
             )
         } else {
-            // which element is at top
+            val imageAtTop = payload.textPosition != TextPosition.BOTTOM
             constraintSet.connect(
-                if (payload.textPosition == TextPosition.BOTTOM) imageViewImage.id else linearLayoutBackground.id,
+                if (imageAtTop) binding.imageViewImage.id else binding.linearLayoutBackground.id,
                 ConstraintSet.TOP,
                 ConstraintSet.PARENT_ID,
-                ConstraintSet.TOP,
-                0
-            )
-            // 2-way connection between bottom and top of elements
-            constraintSet.connect(
-                imageViewImage.id,
-                if (payload.textPosition == TextPosition.TOP) ConstraintSet.TOP else ConstraintSet.BOTTOM,
-                linearLayoutBackground.id,
-                if (payload.textPosition == TextPosition.TOP) ConstraintSet.BOTTOM else ConstraintSet.TOP,
-                0
+                ConstraintSet.TOP
             )
             constraintSet.connect(
-                linearLayoutBackground.id,
-                if (payload.textPosition == TextPosition.TOP) ConstraintSet.BOTTOM else ConstraintSet.TOP,
-                imageViewImage.id,
-                if (payload.textPosition == TextPosition.TOP) ConstraintSet.TOP else ConstraintSet.BOTTOM,
-                0
+                binding.imageViewImage.id,
+                if (imageAtTop) ConstraintSet.TOP else ConstraintSet.BOTTOM,
+                binding.linearLayoutBackground.id,
+                if (imageAtTop) ConstraintSet.BOTTOM else ConstraintSet.TOP
             )
-            // which element is at bottom
             constraintSet.connect(
-                if (payload.textPosition == TextPosition.BOTTOM) linearLayoutBackground.id else imageViewImage.id,
+                binding.linearLayoutBackground.id,
+                if (imageAtTop) ConstraintSet.BOTTOM else ConstraintSet.TOP,
+                binding.imageViewImage.id,
+                if (imageAtTop) ConstraintSet.TOP else ConstraintSet.BOTTOM
+            )
+            constraintSet.connect(
+                if (imageAtTop) binding.linearLayoutBackground.id else binding.imageViewImage.id,
                 ConstraintSet.BOTTOM,
                 ConstraintSet.PARENT_ID,
-                ConstraintSet.BOTTOM,
-                0
+                ConstraintSet.BOTTOM
             )
         }
-        constraintSet.applyTo(inAppMessageDialogRoot)
+        constraintSet.applyTo(binding.inAppMessageDialogRoot)
     }
 
     private fun setupImage() {
-        imageViewImage.isOnTop = payload.textPosition == TextPosition.BOTTOM
-        imageViewImage.textOverImage = payload.isTextOverImage == true
+        binding.imageViewImage.isOnTop = payload.textPosition == TextPosition.BOTTOM
+        binding.imageViewImage.textOverImage = payload.isTextOverImage == true
         imageCache.showImage(
             payload.imageUrl,
-            imageViewImage,
+            binding.imageViewImage,
             onImageNotLoaded = {
                 onError("Image '${payload.imageUrl}' not loaded successfully")
-                onDismiss = null // clear the dismiss listener, we called the button listener
+                onDismiss = null
                 dismiss()
             }
         )
@@ -180,95 +149,91 @@ internal class InAppMessageDialog : InAppMessageView, Dialog {
 
     private fun setupTitleText() {
         if (payload.title.isNullOrEmpty()) {
-            textViewTitle.visibility = View.GONE
-            return
+            binding.textViewTitle.visibility = View.GONE
+        } else {
+            binding.textViewTitle.text = payload.title
+            binding.textViewTitle.setTextColor(parseColor(payload.titleTextColor, Color.BLACK))
+            binding.textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, parseFontSize(payload.titleTextSize, 22f))
         }
-        textViewTitle.text = payload.title
-        textViewTitle.setTextColor(parseColor(payload.titleTextColor, Color.BLACK))
-        textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, parseFontSize(payload.titleTextSize, 22f))
     }
 
     private fun setupBodyText() {
         if (payload.bodyText.isNullOrEmpty()) {
-            textViewBody.visibility = View.GONE
-            return
+            binding.textViewBody.visibility = View.GONE
+        } else {
+            binding.textViewBody.text = payload.bodyText
+            binding.textViewBody.setTextColor(parseColor(payload.bodyTextColor, Color.BLACK))
+            binding.textViewBody.setTextSize(TypedValue.COMPLEX_UNIT_DIP, parseFontSize(payload.bodyTextSize, 14f))
         }
-        textViewBody.text = payload.bodyText
-        textViewBody.setTextColor(parseColor(payload.bodyTextColor, Color.BLACK))
-        textViewBody.setTextSize(TypedValue.COMPLEX_UNIT_DIP, parseFontSize(payload.bodyTextSize, 14f))
     }
 
     private fun setupCloseButton() {
-        buttonClose.setOnClickListener {
+        binding.buttonClose.setOnClickListener {
             dismissMessageWithClosingInteraction(null)
         }
-        buttonClose.setTextColor(parseColor(payload.closeButtonColor, Color.WHITE))
+        binding.buttonClose.setTextColor(parseColor(payload.closeButtonColor, Color.WHITE))
     }
 
     private fun dismissMessageWithClosingInteraction(buttonPayload: InAppMessagePayloadButton?) {
         onDismiss?.invoke(true, buttonPayload)
-        // clear the dismiss listener, we called the manual listener
         onDismiss = null
         dismiss()
     }
 
     private fun setupButtons() {
-        val buttonsCount = if (payload.buttons != null) payload.buttons.count() else 0
-        val button1Payload = if (payload.buttons != null && payload.buttons.isNotEmpty()) payload.buttons[0] else null
-        val button2Payload = if (payload.buttons != null && payload.buttons.count() > 1) payload.buttons[1] else null
-        setupButton(buttonAction1, button1Payload, buttonsCount)
-        setupButton(buttonAction2, button2Payload, buttonsCount)
+        val buttons = payload.buttons ?: emptyList()
+        setupButton(binding.buttonAction1, buttons.getOrNull(0), buttons.size)
+        setupButton(binding.buttonAction2, buttons.getOrNull(1), buttons.size)
     }
 
     private fun setupButton(buttonAction: Button, buttonPayload: InAppMessagePayloadButton?, buttonsCount: Int) {
         if (buttonPayload == null) {
-            buttonSpace.visibility = View.GONE
+            binding.buttonSpace.visibility = View.GONE
             buttonAction.visibility = View.GONE
             return
         }
-        if (buttonsCount == 2) {
-            buttonAction.maxWidth = context.resources
-                    .getDimensionPixelSize(R.dimen.exponea_sdk_in_app_message_max_buttons_width)
+        val buttonWidthRes = if (buttonsCount == 2) {
+            R.dimen.exponea_sdk_in_app_message_max_buttons_width
+        } else {
+            R.dimen.exponea_sdk_in_app_message_max_button_width
         }
-        if (buttonsCount == 1) {
-            buttonAction.maxWidth = context.resources
-                    .getDimensionPixelSize(R.dimen.exponea_sdk_in_app_message_max_button_width)
-        }
+        buttonAction.maxWidth = context.resources.getDimensionPixelSize(buttonWidthRes)
         buttonAction.text = buttonPayload.buttonText
         buttonAction.setTextColor(parseColor(buttonPayload.buttonTextColor, Color.BLACK))
         buttonAction.setBackgroundColor(
             R.drawable.in_app_message_dialog_button,
             parseColor(buttonPayload.buttonBackgroundColor, Color.LTGRAY)
         )
-        if (buttonPayload.buttonType == InAppMessageButtonType.CANCEL) {
-            buttonAction.setOnClickListener {
+        buttonAction.setOnClickListener {
+            if (buttonPayload.buttonType == InAppMessageButtonType.CANCEL) {
                 dismissMessageWithClosingInteraction(buttonPayload)
-            }
-        } else {
-            buttonAction.setOnClickListener {
+            } else {
                 onButtonClick(buttonPayload)
-                onDismiss = null // clear the dismiss listener, we called the button listener
+                onDismiss = null
                 dismiss()
             }
         }
     }
 
     private fun setupWindow() {
-        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        if (payload.isTextOverImage == true) {
-            linearLayoutBackground.setBackgroundColor(Color.TRANSPARENT)
-        } else {
-            val backgroundDrawable = if (payload.textPosition == TextPosition.BOTTOM)
-                R.drawable.in_app_message_dialog_background_bottom
+        window?.apply {
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            if (payload.isTextOverImage == true) {
+                binding.linearLayoutBackground.setBackgroundColor(Color.TRANSPARENT)
+            } else {
+                val backgroundDrawable = if (payload.textPosition == TextPosition.BOTTOM)
+                    R.drawable.in_app_message_dialog_background_bottom
                 else R.drawable.in_app_message_dialog_background_top
-            linearLayoutBackground.setBackgroundColor(
-                backgroundDrawable,
-                parseColor(payload.backgroundColor, Color.WHITE)
-            )
+                binding.linearLayoutBackground.setBackgroundColor(
+                    backgroundDrawable,
+                    parseColor(payload.backgroundColor, Color.WHITE)
+                )
+            }
+            attributes = attributes?.apply {
+                width = WindowManager.LayoutParams.MATCH_PARENT
+                height = WindowManager.LayoutParams.MATCH_PARENT
+                dimAmount = 0.5f
+            }
         }
-
-        window?.attributes?.width = WindowManager.LayoutParams.MATCH_PARENT
-        window?.attributes?.height = WindowManager.LayoutParams.MATCH_PARENT
-        window?.setDimAmount(0.5f)
     }
 }
